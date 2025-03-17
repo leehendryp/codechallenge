@@ -5,8 +5,9 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.detekt)
 }
-
 
 android {
     namespace = "com.leehendryp.codechallenge"
@@ -27,7 +28,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -43,6 +44,25 @@ android {
     }
 }
 
+spotless {
+    kotlin {
+        target("**/*.kt")
+        ktlint(libs.versions.ktlint.get()).editorConfigOverride(
+            mapOf(
+                "android" to "true",
+            ),
+        )
+    }
+    format("misc") {
+        target("**/*.md", "**/.gitignore")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+detekt {
+    config.setFrom(files("detekt_config.yml"))
+}
 
 dependencies {
     implementation(libs.androidx.core.ktx)

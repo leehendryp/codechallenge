@@ -21,6 +21,9 @@ gson = "2.10.1"
 testRunner = "1.6.2"
 coreTesting = "2.2.0"
 mockk = "1.13.10"
+spotless = "7.0.2"
+ktlint = "1.5.0"
+detekt = "1.23.8"
 
 [libraries]
 # Core
@@ -86,3 +89,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
