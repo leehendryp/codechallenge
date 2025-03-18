@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ApplicationBuildType
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,8 @@ plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
 }
+
+apply(from = "../keys.gradle.kts")
 
 android {
     namespace = "com.leehendryp.codechallenge"
@@ -23,15 +27,27 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
+
+            // Lee Mar 18, 2025: Depending on the needs, each variant could have their own secrets
+            getApiSecrets()
+        }
+
+        debug {
+            getApiSecrets()
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -109,4 +125,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+private fun ApplicationBuildType.getApiSecrets() {
+    val keys = rootProject.extra["apiSecrets"] as Map<*, *>
+
+    keys["apiHost"]?.let {
+        if (it is String) {
+            buildConfigField("String", "API_HOST", "\"$it\"")
+        }
+    }
 }
