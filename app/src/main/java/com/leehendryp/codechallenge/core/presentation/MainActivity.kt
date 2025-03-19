@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge
+package com.leehendryp.codechallenge.core.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 
-class MainActivity : ComponentActivity() {
+internal class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

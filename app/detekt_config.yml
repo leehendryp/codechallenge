@@ -1,4 +1,4 @@
 naming:
   FunctionNaming:
     active: true
-    ignoreAnnotated: [ 'Composable' ]
+    ignoreAnnotated: [ 'Composable', 'Test', 'Before', 'After' ]
