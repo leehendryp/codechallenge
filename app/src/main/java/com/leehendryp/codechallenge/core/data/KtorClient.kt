@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 
 private const val TIME_OUT = 10_000
 
-val ktorClient = HttpClient(Android) {
+internal val ktorClient = HttpClient(Android) {
     install(ContentNegotiation) {
         json(
             Json {
