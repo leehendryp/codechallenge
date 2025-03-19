@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CodeChallenge</string>
+    <string name="feed_title_albums">Albums</string>
 </resources>
