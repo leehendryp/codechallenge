@@ -1,8 +1,8 @@
-package com.leehendryp.codechallenge.features.feed.data
+package com.leehendryp.codechallenge.features.list.data
 
-import com.leehendryp.codechallenge.features.feed.data.remote.RemoteDataSource
-import com.leehendryp.codechallenge.features.feed.domain.Album
-import com.leehendryp.codechallenge.features.feed.domain.AlbumRepository
+import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

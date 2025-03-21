@@ -1,6 +1,6 @@
-package com.leehendryp.codechallenge.features.feed.data.model
+package com.leehendryp.codechallenge.features.list.data.model
 
-import com.leehendryp.codechallenge.features.feed.domain.Album
+import com.leehendryp.codechallenge.features.list.domain.Album
 
 internal fun List<AlbumResponse>.toDomainModel() = map { (albumId, id, title, url, thumbnailUrl) ->
     Album(

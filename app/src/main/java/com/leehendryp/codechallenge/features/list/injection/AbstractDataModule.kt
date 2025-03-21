@@ -1,7 +1,7 @@
-package com.leehendryp.codechallenge.features.feed.injection
+package com.leehendryp.codechallenge.features.list.injection
 
-import com.leehendryp.codechallenge.features.feed.data.remote.RemoteDataSource
-import com.leehendryp.codechallenge.features.feed.data.remote.RemoteDataSourceImpl
+import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

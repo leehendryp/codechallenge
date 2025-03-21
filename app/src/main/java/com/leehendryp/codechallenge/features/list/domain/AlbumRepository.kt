@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.feed.domain
+package com.leehendryp.codechallenge.features.list.domain
 
 import kotlinx.coroutines.flow.Flow
 

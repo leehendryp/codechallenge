@@ -1,8 +1,8 @@
-package com.leehendryp.codechallenge.features.feed.injection
+package com.leehendryp.codechallenge.features.list.injection
 
-import com.leehendryp.codechallenge.features.feed.data.AlbumRepositoryImpl
-import com.leehendryp.codechallenge.features.feed.data.remote.RemoteDataSource
-import com.leehendryp.codechallenge.features.feed.domain.AlbumRepository
+import com.leehendryp.codechallenge.features.list.data.AlbumRepositoryImpl
+import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CodeChallenge</string>
     <string name="feed_title_albums">Albums</string>
+    <string name="feed_message_empty_state">Oops, nothing to show.</string>
 </resources>

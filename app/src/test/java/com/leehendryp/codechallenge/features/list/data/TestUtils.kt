@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.feed.data
+package com.leehendryp.codechallenge.features.list.data
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine

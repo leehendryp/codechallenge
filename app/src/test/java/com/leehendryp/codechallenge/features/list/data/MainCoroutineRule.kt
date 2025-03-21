@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.feed.data
+package com.leehendryp.codechallenge.features.list.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

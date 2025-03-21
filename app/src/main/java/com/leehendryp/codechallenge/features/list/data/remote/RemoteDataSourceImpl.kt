@@ -1,12 +1,12 @@
-package com.leehendryp.codechallenge.features.feed.data.remote
+package com.leehendryp.codechallenge.features.list.data.remote
 
 import com.leehendryp.codechallenge.core.domain.ClientException
 import com.leehendryp.codechallenge.core.domain.NetworkException
 import com.leehendryp.codechallenge.core.domain.ServerException
 import com.leehendryp.codechallenge.core.domain.UnknownException
-import com.leehendryp.codechallenge.features.feed.data.model.AlbumResponse
-import com.leehendryp.codechallenge.features.feed.data.model.toDomainModel
-import com.leehendryp.codechallenge.features.feed.domain.Album
+import com.leehendryp.codechallenge.features.list.data.model.AlbumResponse
+import com.leehendryp.codechallenge.features.list.data.model.toDomainModel
+import com.leehendryp.codechallenge.features.list.domain.Album
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

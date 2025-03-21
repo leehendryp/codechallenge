@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.feed.data.model
+package com.leehendryp.codechallenge.features.list.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

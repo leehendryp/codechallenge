@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.feed
+package com.leehendryp.codechallenge.features.list.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,8 +23,8 @@ import com.leehendryp.codechallenge.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun AlbumFeedScreen(
-    presenter: AlbumFeedPresenter,
+internal fun AlbumListScreen(
+    presenter: AlbumListPresenter,
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
 
@@ -48,12 +48,19 @@ internal fun AlbumFeedScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            when (uiState.status) {
-                UIState.Status.Loading -> CircularProgressIndicator(
-                    modifier = Modifier.width(64.dp),
-                    color = MaterialTheme.colorScheme.secondary,
-                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                )
+            when (val status = uiState.status) {
+                UIState.Status.LoadingList -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.width(64.dp),
+                        color = MaterialTheme.colorScheme.secondary,
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                    )
+                    presenter.dispatch(Intent.FetchData)
+                }
+
+                is UIState.Status.Content -> Text(status.albums.toString())
+
+                UIState.Status.Empty -> Text(stringResource(R.string.feed_message_empty_state))
             }
         }
     }

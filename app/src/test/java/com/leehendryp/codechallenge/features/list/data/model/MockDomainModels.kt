@@ -1,7 +1,9 @@
-package com.leehendryp.codechallenge.features.feed.data.model
+package com.leehendryp.codechallenge.features.list.data.model
 
-internal object MockDataModels {
-    private val mockAlbumResponse1 = AlbumResponse(
+import com.leehendryp.codechallenge.features.list.domain.Album
+
+internal object MockDomainModels {
+    private val mockAlbum1 = Album(
         id = 1,
         albumId = 10,
         title = "Lorem Ipsum 1",
@@ -9,7 +11,7 @@ internal object MockDataModels {
         thumbnailUrl = "thumbnailUrl1.com",
     )
 
-    private val mockAlbumResponse2 = AlbumResponse(
+    private val mockAlbum2 = Album(
         id = 2,
         albumId = 20,
         title = "Lorem Ipsum 2",
@@ -17,7 +19,7 @@ internal object MockDataModels {
         thumbnailUrl = "thumbnailUrl2.com",
     )
 
-    private val mockAlbumResponse3 = AlbumResponse(
+    private val mockAlbum3 = Album(
         id = 3,
         albumId = 30,
         title = "Lorem Ipsum 3",
@@ -25,5 +27,5 @@ internal object MockDataModels {
         thumbnailUrl = "thumbnailUrl3.com",
     )
 
-    val mockResponses = listOf(mockAlbumResponse1, mockAlbumResponse2, mockAlbumResponse3)
+    val mockAlbums = listOf(mockAlbum1, mockAlbum2, mockAlbum3)
 }
