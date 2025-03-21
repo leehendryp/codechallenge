@@ -26,8 +26,7 @@ import java.io.IOException
 class RemoteDataSourceImplTest {
 
     @get:Rule
-    val coroutineRule = MainCoroutineRule()
-
+    internal val coroutineRule = MainCoroutineRule()
     private lateinit var dataSource: RemoteDataSource
 
     @Test

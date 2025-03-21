@@ -19,7 +19,7 @@ import org.junit.Test
 internal class AlbumRepositoryImplTest {
 
     @get:Rule
-    private val coroutineRule = MainCoroutineRule()
+    internal val coroutineRule = MainCoroutineRule()
     private lateinit var albumRepository: AlbumRepositoryImpl
     private lateinit var remoteDataSource: RemoteDataSource
 
