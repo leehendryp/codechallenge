@@ -54,7 +54,7 @@ class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ClientException) {
-            assertThat(e.message, equalTo("Client error occurred: 400 - Bad Request"))
+            assertThat(e.message, equalTo("Client error occurred: 400 - Bad Request."))
         }
 
         dataSource = RemoteDataSourceImpl(
@@ -65,7 +65,7 @@ class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ClientException) {
-            assertThat(e.message, equalTo("Client error occurred: 404 - Not Found"))
+            assertThat(e.message, equalTo("Client error occurred: 404 - Not Found."))
         }
     }
 
@@ -79,7 +79,7 @@ class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ServerException) {
-            assertThat(e.message, equalTo("Server error occurred: 500 - Internal Server Error"))
+            assertThat(e.message, equalTo("Server error occurred: 500 - Internal Server Error."))
         }
 
         dataSource = RemoteDataSourceImpl(
@@ -90,7 +90,7 @@ class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ServerException) {
-            assertThat(e.message, equalTo("Server error occurred: 503 - Service Unavailable"))
+            assertThat(e.message, equalTo("Server error occurred: 503 - Service Unavailable."))
         }
     }
 
