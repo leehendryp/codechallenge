@@ -4,6 +4,7 @@ import com.leehendryp.codechallenge.core.domain.ClientException
 import com.leehendryp.codechallenge.core.domain.NetworkException
 import com.leehendryp.codechallenge.core.domain.ServerException
 import com.leehendryp.codechallenge.core.domain.UnknownException
+import com.leehendryp.codechallenge.features.list.data.EXCEPTION_FAILURE
 import com.leehendryp.codechallenge.features.list.data.MainCoroutineRule
 import com.leehendryp.codechallenge.features.list.data.createMockKtorClient
 import com.leehendryp.codechallenge.features.list.data.loadJsonFromFile
@@ -20,8 +21,6 @@ import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
-
-private const val EXCEPTION_FAILURE = "Exception described in scenario was not thrown."
 
 @ExperimentalCoroutinesApi
 class RemoteDataSourceImplTest {
@@ -96,7 +95,7 @@ class RemoteDataSourceImplTest {
         }
     }
 
-    @Test
+    @Test(expected = NetworkException::class)
     fun `when an IOException occurs should throw NetworkException`() = runTest {
         dataSource = RemoteDataSourceImpl(
             client = createMockKtorClient(
@@ -104,15 +103,10 @@ class RemoteDataSourceImplTest {
             ),
         )
 
-        try {
-            dataSource.fetchAlbums().first()
-            fail(EXCEPTION_FAILURE)
-        } catch (e: NetworkException) {
-            assertThat(e.message, equalTo("A network error occurred."))
-        }
+        dataSource.fetchAlbums().first()
     }
 
-    @Test
+    @Test(expected = UnknownException::class)
     fun `when a generic error occurs should throw UnknownException`() = runTest {
         dataSource = RemoteDataSourceImpl(
             client = createMockKtorClient(
@@ -120,12 +114,7 @@ class RemoteDataSourceImplTest {
             ),
         )
 
-        try {
-            dataSource.fetchAlbums().first()
-            fail(EXCEPTION_FAILURE)
-        } catch (e: UnknownException) {
-            assertThat(e.message, equalTo("An unknown error occurred."))
-        }
+        dataSource.fetchAlbums().first()
     }
 
     @Test

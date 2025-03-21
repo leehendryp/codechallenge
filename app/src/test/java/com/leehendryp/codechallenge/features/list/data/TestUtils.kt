@@ -12,6 +12,8 @@ import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
+internal const val EXCEPTION_FAILURE = "Exception described in scenario was not thrown."
+
 internal fun loadJsonFromFile(fileName: String): String {
     val classLoader = Thread.currentThread().contextClassLoader
     return classLoader?.getResource(fileName)?.readText()
