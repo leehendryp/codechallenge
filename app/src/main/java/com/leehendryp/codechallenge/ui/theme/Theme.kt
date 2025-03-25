@@ -297,10 +297,11 @@ internal fun CodeChallengeTheme(
         LocalGradientColors provides gradientColors,
         LocalBackgroundTheme provides backgroundTheme,
         LocalTintTheme provides tintTheme,
+        LocalTypography provides CodeChallengeTypography,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = Typography,
+            typography = CodeChallengeTypography,
             content = content,
         )
     }

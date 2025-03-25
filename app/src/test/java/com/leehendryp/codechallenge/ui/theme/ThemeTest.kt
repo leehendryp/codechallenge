@@ -25,6 +25,19 @@ internal class ThemeTest {
     val rule = createComposeRule()
 
     @Test
+    fun typographyCodeChallengeTypography() {
+        rule.setContent {
+            CodeChallengeTheme(
+                contrastLevel = ContrastLevel.Default,
+                isDarkTheme = false,
+                enableDynamicTheming = false,
+            ) {
+                assertThat(LocalTypography.current, equalTo(MaterialTheme.typography))
+            }
+        }
+    }
+
+    @Test
     fun contrastLevelDefault_isDarkThemeFalse_enableDynamicThemingFalse() {
         rule.setContent {
             CodeChallengeTheme(
