@@ -25,13 +25,14 @@ internal class ThemeTest {
     val rule = createComposeRule()
 
     @Test
-    fun isDarkThemeFalse_enableDynamicThemingFalse() {
+    fun contrastLevelDefault_isDarkThemeFalse_enableDynamicThemingFalse() {
         rule.setContent {
             CodeChallengeTheme(
+                contrastLevel = ContrastLevel.Default,
                 isDarkTheme = false,
                 enableDynamicTheming = false,
             ) {
-                val colorScheme = LightColorScheme
+                val colorScheme = lightColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
                 assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
                 assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
@@ -41,13 +42,48 @@ internal class ThemeTest {
     }
 
     @Test
-    fun isDarkThemeTrue_enableDynamicThemingFalse() {
+    fun contrastLevelMedium_isDarkThemeFalse_enableDynamicThemingFalse() {
         rule.setContent {
             CodeChallengeTheme(
+                contrastLevel = ContrastLevel.Medium,
+                isDarkTheme = false,
+                enableDynamicTheming = false,
+            ) {
+                val colorScheme = mediumContrastLightColorScheme
+                assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
+                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
+                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
+                assertThat(LocalTintTheme.current, equalTo(TintTheme()))
+            }
+        }
+    }
+
+    @Test
+    fun contrastLevelHigh_isDarkThemeFalse_enableDynamicThemingFalse() {
+        rule.setContent {
+            CodeChallengeTheme(
+                contrastLevel = ContrastLevel.High,
+                isDarkTheme = false,
+                enableDynamicTheming = false,
+            ) {
+                val colorScheme = highContrastLightColorScheme
+                assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
+                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
+                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
+                assertThat(LocalTintTheme.current, equalTo(TintTheme()))
+            }
+        }
+    }
+
+    @Test
+    fun contrastLevelDefault_isDarkThemeTrue_enableDynamicThemingFalse() {
+        rule.setContent {
+            CodeChallengeTheme(
+                contrastLevel = ContrastLevel.Default,
                 isDarkTheme = true,
                 enableDynamicTheming = false,
             ) {
-                val colorScheme = DarkColorScheme
+                val colorScheme = darkColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
                 assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
                 assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
@@ -57,7 +93,41 @@ internal class ThemeTest {
     }
 
     @Test
-    fun isDarkThemeFalse_enableDynamicThemingTrue() {
+    fun contrastLevelMedium_isDarkThemeTrue_enableDynamicThemingFalse() {
+        rule.setContent {
+            CodeChallengeTheme(
+                contrastLevel = ContrastLevel.Medium,
+                isDarkTheme = true,
+                enableDynamicTheming = false,
+            ) {
+                val colorScheme = mediumContrastDarkColorScheme
+                assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
+                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
+                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
+                assertThat(LocalTintTheme.current, equalTo(TintTheme()))
+            }
+        }
+    }
+
+    @Test
+    fun contrastLevelHigh_isDarkThemeTrue_enableDynamicThemingFalse() {
+        rule.setContent {
+            CodeChallengeTheme(
+                contrastLevel = ContrastLevel.High,
+                isDarkTheme = true,
+                enableDynamicTheming = false,
+            ) {
+                val colorScheme = highContrastDarkColorScheme
+                assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
+                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
+                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
+                assertThat(LocalTintTheme.current, equalTo(TintTheme()))
+            }
+        }
+    }
+
+    @Test
+    fun contrastLevelDefault_isDarkThemeFalse_enableDynamicThemingTrue() {
         rule.setContent {
             CodeChallengeTheme(
                 isDarkTheme = false,
@@ -76,7 +146,7 @@ internal class ThemeTest {
     }
 
     @Test
-    fun isDarkThemeTrue_enableDynamicThemingTrue() {
+    fun contrastLevelDefault_isDarkThemeTrue_enableDynamicThemingTrue() {
         rule.setContent {
             CodeChallengeTheme(
                 isDarkTheme = true,
@@ -113,13 +183,13 @@ internal class ThemeTest {
     @Composable
     private fun dynamicLightColorSchemeOrDefault(): ColorScheme = when {
         SDK_INT >= VERSION_CODES.S -> dynamicLightColorScheme(LocalContext.current)
-        else -> LightColorScheme
+        else -> lightColorScheme
     }
 
     @Composable
     private fun dynamicDarkColorSchemeOrDefault(): ColorScheme = when {
         SDK_INT >= VERSION_CODES.S -> dynamicDarkColorScheme(LocalContext.current)
-        else -> DarkColorScheme
+        else -> darkColorScheme
     }
 
     private fun dynamicGradientColorsOrDefault(colorScheme: ColorScheme): GradientColors = when {
@@ -155,8 +225,18 @@ internal class ThemeTest {
         assertThat(actual.onSurface, equalTo(expected.onSurface))
         assertThat(actual.surfaceVariant, equalTo(expected.surfaceVariant))
         assertThat(actual.onSurfaceVariant, equalTo(expected.onSurfaceVariant))
+        assertThat(actual.outline, equalTo(expected.outline))
+        assertThat(actual.outlineVariant, equalTo(expected.outlineVariant))
+        assertThat(actual.scrim, equalTo(expected.scrim))
         assertThat(actual.inverseSurface, equalTo(expected.inverseSurface))
         assertThat(actual.inverseOnSurface, equalTo(expected.inverseOnSurface))
-        assertThat(actual.outline, equalTo(expected.outline))
+        assertThat(actual.inversePrimary, equalTo(expected.inversePrimary))
+        assertThat(actual.surfaceDim, equalTo(expected.surfaceDim))
+        assertThat(actual.surfaceBright, equalTo(expected.surfaceBright))
+        assertThat(actual.surfaceContainerLowest, equalTo(expected.surfaceContainerLowest))
+        assertThat(actual.surfaceContainerLow, equalTo(expected.surfaceContainerLow))
+        assertThat(actual.surfaceContainer, equalTo(expected.surfaceContainer))
+        assertThat(actual.surfaceContainerHigh, equalTo(expected.surfaceContainerHigh))
+        assertThat(actual.surfaceContainerHighest, equalTo(expected.surfaceContainerHighest))
     }
 }
