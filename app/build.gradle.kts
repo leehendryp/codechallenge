@@ -124,6 +124,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
+    implementation(libs.androidx.ui.test.manifest)
+
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.runner)
     testImplementation(libs.androidx.arch.core.testing)
@@ -137,7 +139,6 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }
 
 private fun ApplicationBuildType.getApiSecrets() {
