@@ -46,9 +46,9 @@ internal class RemoteDataSourceImpl @Inject constructor(
 }
 
 private fun HttpResponse.toCodeChallengeException(): Exception = when (status.value) {
-    in 400..499 -> ClientException("Client error occurred: ${status.value} - ${status.description}")
-    in 500..599 -> ServerException("Server error occurred: ${status.value} - ${status.description}")
-    else -> UnknownException("An unknown error occurred: ${status.value}.", null)
+    in 400..499 -> ClientException("Client error occurred: ${status.value} - ${status.description}.")
+    in 500..599 -> ServerException("Server error occurred: ${status.value} - ${status.description}.")
+    else -> UnknownException("An unknown error occurred: ${status.value} - ${status.description}.", null)
 }
 
 private fun Throwable.toCodeChallengeException() = when (this) {
