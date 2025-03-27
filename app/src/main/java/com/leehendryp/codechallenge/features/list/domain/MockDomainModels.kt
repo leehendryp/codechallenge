@@ -1,6 +1,4 @@
-package com.leehendryp.codechallenge.features.list.data.model
-
-import com.leehendryp.codechallenge.features.list.domain.Album
+package com.leehendryp.codechallenge.features.list.domain
 
 internal object MockDomainModels {
     private val mockAlbum1 = Album(

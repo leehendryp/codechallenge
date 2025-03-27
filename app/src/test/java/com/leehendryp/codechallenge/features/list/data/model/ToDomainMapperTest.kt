@@ -1,6 +1,7 @@
 package com.leehendryp.codechallenge.features.list.data.model
 
 import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test

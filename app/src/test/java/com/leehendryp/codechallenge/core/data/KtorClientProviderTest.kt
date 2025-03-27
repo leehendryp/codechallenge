@@ -1,8 +1,8 @@
 package com.leehendryp.codechallenge.core.data
 
 import com.leehendryp.codechallenge.BuildConfig
-import com.leehendryp.codechallenge.features.list.data.MainCoroutineRule
-import com.leehendryp.codechallenge.features.list.data.loadJsonFromFile
+import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
+import com.leehendryp.codechallenge.core.utils.loadJsonFromFile
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
