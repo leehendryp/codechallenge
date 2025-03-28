@@ -15,9 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.leehendryp.codechallenge.features.list.domain.Album
 import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumContentTestTags.ALBUM_CONTENT_IMAGE
 import com.leehendryp.codechallenge.ui.ds.DSAsyncImage
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTypography
@@ -49,7 +51,8 @@ internal fun AlbumContent(
             modifier = Modifier
                 .size(120.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(colorScheme.surfaceContainer),
+                .background(colorScheme.surfaceContainer)
+                .testTag(ALBUM_CONTENT_IMAGE + "_${model.id}"),
             imageUrl = model.thumbnailUrl,
             contentScale = ContentScale.Fit,
             contentDescription = null,
@@ -72,4 +75,8 @@ private fun AlbumContentPreview() {
             model = MockDomainModels.mockAlbums.first(),
         )
     }
+}
+
+internal object AlbumContentTestTags {
+    const val ALBUM_CONTENT_IMAGE = "ALBUM_CONTENT_IMAGE"
 }

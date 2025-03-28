@@ -23,7 +23,7 @@ internal data class UIState(
     sealed interface Status {
         data object LoadingList : Status
         data object Empty : Status
-        data class Content(val albums: List<Album>) : Status
+        data class Content(val models: List<Album>) : Status
     }
 
     sealed interface SnackBar {

@@ -1,7 +1,7 @@
 package com.leehendryp.codechallenge.features.list.domain
 
 internal object MockDomainModels {
-    private val mockAlbum1 = Album(
+    val mockAlbum1: Album = Album(
         id = 1,
         albumId = 10,
         title = "Lorem Ipsum 1",

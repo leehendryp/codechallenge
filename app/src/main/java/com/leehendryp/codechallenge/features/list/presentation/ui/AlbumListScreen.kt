@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,6 +27,10 @@ import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.AlbumListPresenter
 import com.leehendryp.codechallenge.features.list.presentation.Intent
 import com.leehendryp.codechallenge.features.list.presentation.UIState
+import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.ALBUM_LIST_LAZY_COLUMN
+import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.EMPTY_STATE
+import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.PROGRESS_INDICATOR
+import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.TOP_APP_BAR
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.ThemePreviews
 
@@ -42,7 +47,7 @@ internal fun AlbumListScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun AlbumListContent(
+internal fun AlbumListContent(
     modifier: Modifier = Modifier,
     uiState: UIState,
     onIntent: (Intent) -> Unit,
@@ -51,6 +56,7 @@ private fun AlbumListContent(
         modifier = modifier,
         topBar = {
             TopAppBar(
+                modifier = Modifier.testTag(TOP_APP_BAR),
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
@@ -69,27 +75,34 @@ private fun AlbumListContent(
         ) {
             when (val status = uiState.status) {
                 UIState.Status.LoadingList -> {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(modifier = Modifier.testTag(PROGRESS_INDICATOR))
                     onIntent(Intent.FetchData)
                 }
 
-                is UIState.Status.Content -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        items(
-                            items = status.albums,
-                            key = { it.id },
-                        ) { album ->
-                            AlbumContent(model = album)
-                        }
-                    }
-                }
-
-                UIState.Status.Empty -> Text(stringResource(R.string.feed_message_empty_state))
+                is UIState.Status.Content -> AlbumListLazyColumn(status)
+                UIState.Status.Empty -> Text(
+                    modifier = Modifier.testTag(EMPTY_STATE),
+                    text = stringResource(R.string.feed_message_empty_state),
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun AlbumListLazyColumn(status: UIState.Status.Content) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag(ALBUM_LIST_LAZY_COLUMN),
+        contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        items(
+            items = status.models,
+            key = { it.id },
+        ) { album ->
+            AlbumContent(model = album)
         }
     }
 }
@@ -101,9 +114,16 @@ private fun AlbumListContentPreview() {
         AlbumListContent(
             uiState = UIState(
                 status = UIState.Status.Content(
-                    albums = MockDomainModels.mockAlbums,
+                    models = MockDomainModels.mockAlbums,
                 ),
             ),
         ) {}
     }
+}
+
+internal object AlbumListScreenTestTags {
+    const val TOP_APP_BAR = "TOP_BAR"
+    const val PROGRESS_INDICATOR = "PROGRESS_INDICATOR_TAG"
+    const val ALBUM_LIST_LAZY_COLUMN = "ALBUM_LIST_LAZY_COLUMN_TAG"
+    const val EMPTY_STATE = "EMPTY_STATE_TAG"
 }
