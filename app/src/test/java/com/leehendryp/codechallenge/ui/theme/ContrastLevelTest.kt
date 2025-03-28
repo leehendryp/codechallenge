@@ -13,7 +13,7 @@ import org.robolectric.Shadows
 import org.robolectric.shadows.ShadowAccessibilityManager
 
 @RunWith(RobolectricTestRunner::class)
-class ContrastLevelTest {
+internal class ContrastLevelTest {
 
     private lateinit var context: Context
     private lateinit var accessibilityManager: AccessibilityManager

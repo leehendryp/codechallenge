@@ -116,7 +116,6 @@ dependencies {
 
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.ui.test.junit4.android)
     implementation(libs.androidx.ui.text.google.fonts)
     ksp(libs.hilt.android.compiler)
 
@@ -124,6 +123,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
+    implementation(libs.androidx.ui.test.junit4.android)
     implementation(libs.androidx.ui.test.manifest)
 
     testImplementation(libs.junit)

@@ -27,7 +27,7 @@ import org.junit.Test
 // Lee Mar 20, 2025: It turns out testing some of Ktor capabilities and plugin settings is trickier
 // than I expected. I decided to move the error validation to the RemoteDataSource.
 @OptIn(ExperimentalCoroutinesApi::class)
-class KtorClientProviderTest {
+internal class KtorClientProviderTest {
 
     @get:Rule
     val coroutineRule = MainCoroutineRule()

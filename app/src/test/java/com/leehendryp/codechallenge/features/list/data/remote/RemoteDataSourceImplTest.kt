@@ -23,7 +23,7 @@ import org.junit.Test
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
-class RemoteDataSourceImplTest {
+internal class RemoteDataSourceImplTest {
 
     @get:Rule
     internal val coroutineRule = MainCoroutineRule()

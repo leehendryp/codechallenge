@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 @ExperimentalCoroutinesApi
-class MainCoroutineRule(
+internal class MainCoroutineRule(
     private val testDispatcher: TestDispatcher = StandardTestDispatcher(),
 ) : TestWatcher() {
 
