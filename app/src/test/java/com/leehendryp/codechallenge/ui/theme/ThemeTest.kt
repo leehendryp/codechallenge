@@ -6,11 +6,9 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.unit.dp
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
@@ -47,8 +45,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = lightColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(TintTheme()))
             }
         }
@@ -64,8 +60,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = mediumContrastLightColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(TintTheme()))
             }
         }
@@ -81,8 +75,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = highContrastLightColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(TintTheme()))
             }
         }
@@ -98,8 +90,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = darkColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(TintTheme()))
             }
         }
@@ -115,8 +105,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = mediumContrastDarkColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(TintTheme()))
             }
         }
@@ -132,8 +120,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = highContrastDarkColorScheme
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(LocalGradientColors.current, equalTo(gradientColors(colorScheme)))
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(TintTheme()))
             }
         }
@@ -148,11 +134,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = dynamicLightColorSchemeOrDefault()
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(
-                    LocalGradientColors.current,
-                    equalTo(dynamicGradientColorsOrDefault(colorScheme)),
-                )
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(dynamicTintThemeOrDefault(colorScheme)))
             }
         }
@@ -167,11 +148,6 @@ internal class ThemeTest {
             ) {
                 val colorScheme = dynamicDarkColorSchemeOrDefault()
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
-                assertThat(
-                    LocalGradientColors.current,
-                    equalTo(dynamicGradientColorsOrDefault(colorScheme)),
-                )
-                assertThat(LocalBackgroundTheme.current, equalTo(backgroundTheme(colorScheme)))
                 assertThat(LocalTintTheme.current, equalTo(dynamicTintThemeOrDefault(colorScheme)))
             }
         }
@@ -181,17 +157,6 @@ internal class ThemeTest {
         SDK_INT >= VERSION_CODES.S -> TintTheme(colorScheme.primary)
         else -> TintTheme()
     }
-
-    private fun gradientColors(colorScheme: ColorScheme) = GradientColors(
-        top = colorScheme.inverseOnSurface,
-        bottom = colorScheme.primaryContainer,
-        container = colorScheme.surface,
-    )
-
-    private fun backgroundTheme(colorScheme: ColorScheme) = BackgroundTheme(
-        color = colorScheme.surface,
-        tonalElevation = 2.dp,
-    )
 
     @Composable
     private fun dynamicLightColorSchemeOrDefault(): ColorScheme = when {
@@ -204,13 +169,6 @@ internal class ThemeTest {
         SDK_INT >= VERSION_CODES.S -> dynamicDarkColorScheme(LocalContext.current)
         else -> darkColorScheme
     }
-
-    private fun dynamicGradientColorsOrDefault(colorScheme: ColorScheme): GradientColors = when {
-        SDK_INT >= VERSION_CODES.S -> emptyGradientColors(colorScheme)
-        else -> gradientColors(colorScheme)
-    }
-
-    private fun emptyGradientColors(colorScheme: ColorScheme) = GradientColors(container = colorScheme.surfaceColorAtElevation(2.dp))
 
     private fun assertThatColorSchemeEqualTo(
         actual: ColorScheme,

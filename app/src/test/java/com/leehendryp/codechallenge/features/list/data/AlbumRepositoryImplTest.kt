@@ -1,8 +1,9 @@
 package com.leehendryp.codechallenge.features.list.data
 
 import com.leehendryp.codechallenge.core.domain.ClientException
-import com.leehendryp.codechallenge.features.list.data.model.MockDomainModels
+import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
 import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

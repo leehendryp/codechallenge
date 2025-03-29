@@ -4,12 +4,12 @@ import com.leehendryp.codechallenge.core.domain.ClientException
 import com.leehendryp.codechallenge.core.domain.NetworkException
 import com.leehendryp.codechallenge.core.domain.ServerException
 import com.leehendryp.codechallenge.core.domain.UnknownException
-import com.leehendryp.codechallenge.features.list.data.EXCEPTION_FAILURE
-import com.leehendryp.codechallenge.features.list.data.MainCoroutineRule
-import com.leehendryp.codechallenge.features.list.data.createMockKtorClient
-import com.leehendryp.codechallenge.features.list.data.loadJsonFromFile
-import com.leehendryp.codechallenge.features.list.data.model.MockDomainModels
+import com.leehendryp.codechallenge.core.utils.EXCEPTION_FAILURE
+import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
+import com.leehendryp.codechallenge.core.utils.createMockKtorClient
+import com.leehendryp.codechallenge.core.utils.loadJsonFromFile
 import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +23,7 @@ import org.junit.Test
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
-class RemoteDataSourceImplTest {
+internal class RemoteDataSourceImplTest {
 
     @get:Rule
     internal val coroutineRule = MainCoroutineRule()

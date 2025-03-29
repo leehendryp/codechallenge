@@ -9,11 +9,9 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 
 internal val lightColorScheme = lightColorScheme(
     primary = primaryLight,
@@ -243,49 +241,22 @@ internal val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
 
-enum class ContrastLevel {
-    Default,
-    Medium,
-    High,
-}
-
 @Composable
 internal fun CodeChallengeTheme(
     contrastLevel: ContrastLevel = ContrastLevel.Default,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    enableDynamicTheming: Boolean = true,
+    enableDynamicTheming: Boolean = false,
     content: @Composable () -> Unit,
 ) {
+    val context = LocalContext.current
+
     val colorScheme = when {
         enableDynamicTheming && supportsDynamicTheming() -> {
-            val context = LocalContext.current
             if (isDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
         isDarkTheme -> getDarkColorScheme(contrastLevel)
         else -> getLightColorScheme(contrastLevel)
-    }
-
-    val emptyGradientColors = GradientColors(container = colorScheme.surfaceColorAtElevation(2.dp))
-
-    val defaultGradientColors = GradientColors(
-        top = colorScheme.inverseOnSurface,
-        bottom = colorScheme.primaryContainer,
-        container = colorScheme.surface,
-    )
-
-    val gradientColors = when {
-        enableDynamicTheming && supportsDynamicTheming() -> emptyGradientColors
-        else -> defaultGradientColors
-    }
-
-    val defaultBackgroundTheme = BackgroundTheme(
-        color = colorScheme.surface,
-        tonalElevation = 2.dp,
-    )
-
-    val backgroundTheme = when {
-        else -> defaultBackgroundTheme
     }
 
     val tintTheme = when {
@@ -294,8 +265,6 @@ internal fun CodeChallengeTheme(
     }
 
     CompositionLocalProvider(
-        LocalGradientColors provides gradientColors,
-        LocalBackgroundTheme provides backgroundTheme,
         LocalTintTheme provides tintTheme,
         LocalTypography provides CodeChallengeTypography,
     ) {

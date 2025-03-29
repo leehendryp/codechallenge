@@ -5,8 +5,8 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 @Immutable
-data class TintTheme(
+internal data class TintTheme(
     val iconTint: Color = Color.Unspecified,
 )
 
-val LocalTintTheme = staticCompositionLocalOf { TintTheme() }
+internal val LocalTintTheme = staticCompositionLocalOf { TintTheme() }
