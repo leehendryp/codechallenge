@@ -6,6 +6,8 @@ import com.leehendryp.codechallenge.core.utils.loadJsonFromFile
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
+import io.ktor.client.engine.mock.respondError
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.plugin
@@ -18,6 +20,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.headersOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -72,5 +75,29 @@ internal class KtorClientProviderTest {
         // Lee Mar 20, 2025: It seems that the MessageLengthLimitingLogger instance used
         //  here in Ktor does not match the one running internally, for whatever reason.
         // assertThat(loggingConfig.logger, `is`(Logger.ANDROID))
+    }
+
+    @Test
+    fun `should retry on server error`() = runTest {
+        var callCount = 0
+
+        val client = HttpClient(MockEngine) {
+            install(HttpRequestRetry) {
+                retryOnServerErrors(maxRetries = 2)
+                retryIf { _, response -> response.status.value == 500 }
+                delayMillis { 0 } // Don't delay during test
+            }
+
+            engine {
+                addHandler { request ->
+                    callCount++
+                    respondError(HttpStatusCode.InternalServerError)
+                }
+            }
+        }
+
+        client.get("any/path/")
+
+        assertThat(callCount, equalTo(3))
     }
 }
