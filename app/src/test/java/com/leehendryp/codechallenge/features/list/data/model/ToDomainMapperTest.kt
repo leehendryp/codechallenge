@@ -1,5 +1,7 @@
 package com.leehendryp.codechallenge.features.list.data.model
 
+import com.leehendryp.codechallenge.features.list.data.remote.model.AlbumResponse
+import com.leehendryp.codechallenge.features.list.data.remote.model.toDomainModels
 import com.leehendryp.codechallenge.features.list.domain.Album
 import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import org.hamcrest.CoreMatchers.equalTo
@@ -10,7 +12,7 @@ internal class ToDomainMapperTest {
 
     @Test
     fun `when response values are not null toDomainModel should map values correctly`() {
-        val result = MockDataModels.mockResponses.toDomainModel()
+        val result = MockDataModels.mockResponses.toDomainModels()
 
         assertThat(result, equalTo(MockDomainModels.mockAlbums))
     }
@@ -24,7 +26,7 @@ internal class ToDomainMapperTest {
             Album(id = -1, albumId = -1, title = "", url = "", thumbnailUrl = ""),
         )
 
-        val result = responses.toDomainModel()
+        val result = responses.toDomainModels()
 
         assertThat(result, equalTo(expected))
     }

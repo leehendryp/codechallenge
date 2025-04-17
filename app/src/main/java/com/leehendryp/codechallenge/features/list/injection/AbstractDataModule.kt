@@ -1,5 +1,7 @@
 package com.leehendryp.codechallenge.features.list.injection
 
+import com.leehendryp.codechallenge.features.list.data.local.LocalDataSource
+import com.leehendryp.codechallenge.features.list.data.local.LocalDataSourceImpl
 import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
 import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSourceImpl
 import dagger.Binds
@@ -12,4 +14,7 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class AbstractDataModule {
     @Binds
     abstract fun bindRemoteDataSource(impl: RemoteDataSourceImpl): RemoteDataSource
+
+    @Binds
+    abstract fun bindLocalDataSource(impl: LocalDataSourceImpl): LocalDataSource
 }

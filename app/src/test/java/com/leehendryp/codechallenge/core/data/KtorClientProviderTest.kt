@@ -85,7 +85,7 @@ internal class KtorClientProviderTest {
             install(HttpRequestRetry) {
                 retryOnServerErrors(maxRetries = 2)
                 retryIf { _, response -> response.status.value == 500 }
-                delayMillis { 0 } // Don't delay during test
+                delayMillis { 0 }
             }
 
             engine {
