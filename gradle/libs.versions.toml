@@ -1,14 +1,14 @@
 [versions]
-agp = "8.9.0"
-kotlin = "2.1.0"
-ksp = "2.1.0-1.0.29"
+agp = "8.9.1"
+kotlin = "2.1.10"
+ksp = "2.1.10-1.0.31"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 activityCompose = "1.10.1"
-composeBom = "2025.03.00"
-hilt = "2.54"
+composeBom = "2025.03.01"
+hilt = "2.56"
 kotlinCoroutines = "1.10.1"
 lifecycle = "2.8.7"
 viewmodelCompose = "2.8.7"
@@ -70,6 +70,7 @@ androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navig
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 
 # Gson
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }

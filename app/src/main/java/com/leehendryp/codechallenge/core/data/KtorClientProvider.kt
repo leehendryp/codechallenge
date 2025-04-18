@@ -3,6 +3,7 @@ package com.leehendryp.codechallenge.core.data
 import com.leehendryp.codechallenge.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -16,7 +17,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-private const val TIME_OUT = 10_000L
+private const val TIME_OUT = 15_000L
 
 internal class KtorClientProvider @Inject constructor(
     engine: HttpClientEngine,
@@ -30,6 +31,10 @@ internal class KtorClientProvider @Inject constructor(
                     ignoreUnknownKeys = true
                 },
             )
+        }
+
+        install(HttpRequestRetry) {
+            maxRetries = 3
         }
 
         defaultRequest {

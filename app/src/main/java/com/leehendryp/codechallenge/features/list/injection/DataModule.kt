@@ -1,6 +1,7 @@
 package com.leehendryp.codechallenge.features.list.injection
 
 import com.leehendryp.codechallenge.features.list.data.AlbumRepositoryImpl
+import com.leehendryp.codechallenge.features.list.data.local.LocalDataSource
 import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
 import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
 import dagger.Module
@@ -17,7 +18,8 @@ internal object DataModule {
     @Provides
     fun provideAlbumRepository(
         remoteDataSource: RemoteDataSource,
-    ): AlbumRepository = AlbumRepositoryImpl(remoteDataSource)
+        localDataSource: LocalDataSource,
+    ): AlbumRepository = AlbumRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     fun provideCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.IO
