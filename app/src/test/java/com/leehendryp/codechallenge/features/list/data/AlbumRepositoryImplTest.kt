@@ -93,7 +93,7 @@ internal class AlbumRepositoryImplTest {
     fun `when remote data source fails it should duly propagate the exception`() = runTest {
         val errorMessage = "Error"
         coEvery { remoteDataSource.fetchAlbums() } returns flow { throw ClientException(errorMessage) }
-        coEvery { localDataSource.getAlbums() } returns flow { MockDomainModels.mockAlbums }
+        coEvery { localDataSource.getAlbums() } returns flowOf(MockDomainModels.mockAlbums)
 
         try {
             repository.getAlbums().first()
@@ -108,7 +108,7 @@ internal class AlbumRepositoryImplTest {
 
     @Test
     fun `when local data source fails it should duly propagate the exception`() = runTest {
-        coEvery { remoteDataSource.fetchAlbums() } returns flow { MockDomainModels.mockAlbums }
+        coEvery { remoteDataSource.fetchAlbums() } returns flowOf(MockDomainModels.mockAlbums)
         coEvery { localDataSource.getAlbums() } returns flow {
             throw LocalRetrievalException(RETRIEVAL_ERROR, IllegalAccessException())
         }
