@@ -117,7 +117,7 @@ internal class AlbumRepositoryImplTest {
             repository.getAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (exception: Throwable) {
-            coVerify(exactly = 0) { remoteDataSource.fetchAlbums() }
+            coVerify(exactly = 1) { remoteDataSource.fetchAlbums() }
             coVerify(exactly = 1) { localDataSource.getAlbums() }
             assertThat(exception, instanceOf(LocalRetrievalException::class.java))
             assertThat(exception.message, equalTo(RETRIEVAL_ERROR))
