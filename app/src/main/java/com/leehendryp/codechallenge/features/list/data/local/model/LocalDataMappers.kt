@@ -2,7 +2,7 @@ package com.leehendryp.codechallenge.features.list.data.local.model
 
 import com.leehendryp.codechallenge.features.list.domain.Album
 
-internal fun List<AlbumEntity>.toDomainModels(): List<Album> = map { (id, albumId, title, url, thumbnailUrl) ->
+internal fun AlbumEntity.toDomainModel(): Album = let { (id, albumId, title, url, thumbnailUrl) ->
     Album(
         id = id ?: -1,
         albumId = albumId ?: -1,

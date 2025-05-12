@@ -1,18 +1,18 @@
 package com.leehendryp.codechallenge.features.list.data.local
 
-import com.leehendryp.codechallenge.core.domain.LocalInsertionException
-import com.leehendryp.codechallenge.core.domain.LocalRetrievalException
+import androidx.paging.PagingSource
+import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientException
+import com.leehendryp.codechallenge.core.domain.INSERTION_ERROR
+import com.leehendryp.codechallenge.core.domain.RETRIEVAL_ERROR
 import com.leehendryp.codechallenge.core.utils.EXCEPTION_FAILURE
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
+import com.leehendryp.codechallenge.features.list.data.local.model.AlbumEntity
 import com.leehendryp.codechallenge.features.list.data.model.MockDataModels
 import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.instanceOf
@@ -37,29 +37,35 @@ class LocalDataSourceImplTest {
     }
 
     @Test
-    fun `when getting local data finds items, should emit it`() = runTest {
-        coEvery { dao.getAll() } returns flowOf(MockDataModels.mockEntities)
+    fun `when getting data succeeds, should return the proper PagingSource`() = runTest {
+        val pagingSource = mockk<PagingSource<Int, AlbumEntity>>()
+        coEvery { dao.getPagedAlbums() } returns pagingSource
 
-        val result = dataSource.getAlbums().first()
+        val result = dataSource.getPagedAlbums()
 
-        coVerify(exactly = 1) { dataSource.getAlbums() }
-        coVerify(exactly = 1) { dao.getAll() }
-        assertThat(result, equalTo(MockDomainModels.mockAlbums))
+        coVerify(exactly = 1) { dataSource.getPagedAlbums() }
+        coVerify(exactly = 1) { dao.getPagedAlbums() }
+        assertThat(result, equalTo(pagingSource))
     }
 
     @Test
-    fun `when getting local data finds no items, should emit empty list`() = runTest {
-        coEvery { dao.getAll() } returns flowOf(emptyList())
+    fun `when getting data fails, should throw proper ClientException`() = runTest {
+        coEvery { dao.getPagedAlbums() } throws IllegalArgumentException()
 
-        val result = dataSource.getAlbums().first()
-
-        coVerify(exactly = 1) { dataSource.getAlbums() }
-        coVerify(exactly = 1) { dao.getAll() }
-        assertThat(result, equalTo(emptyList()))
+        try {
+            dataSource.getPagedAlbums()
+            fail(EXCEPTION_FAILURE)
+        } catch (exception: Throwable) {
+            coVerify(exactly = 1) { dataSource.getPagedAlbums() }
+            coVerify(exactly = 1) { dao.getPagedAlbums() }
+            assertThat(exception, instanceOf(ClientException::class.java))
+            assertThat(exception.message, equalTo(RETRIEVAL_ERROR))
+            assertThat(exception.cause, instanceOf(IllegalArgumentException::class.java))
+        }
     }
 
     @Test
-    fun `when data is successfully saved, should emit complete`() = runTest {
+    fun `when saving data succeeds, should complete`() = runTest {
         coEvery { dao.insertAll(MockDataModels.mockEntities) } returns Unit
 
         dataSource.save(MockDomainModels.mockAlbums)
@@ -78,23 +84,7 @@ class LocalDataSourceImplTest {
     }
 
     @Test
-    fun `when getting local data results in an exception, should catch it`() = runTest {
-        coEvery { dao.getAll() } returns flow { throw IllegalArgumentException() }
-
-        try {
-            dataSource.getAlbums().first()
-            fail(EXCEPTION_FAILURE)
-        } catch (exception: Throwable) {
-            coVerify(exactly = 1) { dataSource.getAlbums() }
-            coVerify(exactly = 1) { dao.getAll() }
-            assertThat(exception, instanceOf(LocalRetrievalException::class.java))
-            assertThat(exception.message, equalTo(RETRIEVAL_ERROR))
-            assertThat(exception.cause?.cause, instanceOf(IllegalArgumentException::class.java))
-        }
-    }
-
-    @Test
-    fun `when saving local data results in an exception, should catch it`() = runTest {
+    fun `when saving data fails, should throw proper ClientException`() = runTest {
         coEvery { dao.insertAll(any()) } throws IllegalArgumentException()
 
         try {
@@ -103,7 +93,7 @@ class LocalDataSourceImplTest {
         } catch (exception: Throwable) {
             coVerify(exactly = 1) { dataSource.save(MockDomainModels.mockAlbums) }
             coVerify(exactly = 1) { dao.insertAll(MockDataModels.mockEntities) }
-            assertThat(exception, instanceOf(LocalInsertionException::class.java))
+            assertThat(exception, instanceOf(ClientException::class.java))
             assertThat(exception.message, equalTo(INSERTION_ERROR))
             assertThat(exception.cause, instanceOf(IllegalArgumentException::class.java))
         }
