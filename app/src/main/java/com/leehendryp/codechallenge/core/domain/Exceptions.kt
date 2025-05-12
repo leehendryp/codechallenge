@@ -1,8 +1,15 @@
 package com.leehendryp.codechallenge.core.domain
 
-internal class NetworkException(message: String, cause: Throwable) : Exception(message, cause)
-internal class ClientException(message: String) : Exception(message, null)
-internal class ServerException(message: String) : Exception(message, null)
-internal class LocalRetrievalException(message: String, cause: Throwable) : Exception(message, cause)
-internal class LocalInsertionException(message: String, cause: Throwable) : Exception(message, cause)
-internal class UnknownException(message: String, cause: Throwable?) : Exception(message, cause)
+internal const val RETRIEVAL_ERROR = "An error occurred when getting local data."
+internal const val INSERTION_ERROR = "An error occurred when saving local data."
+
+internal sealed interface CodeChallengeException {
+    class ClientException(message: String, cause: Throwable? = null) :
+        Exception(message, cause), CodeChallengeException
+
+    class ServerException(message: String, cause: Throwable? = null) :
+        Exception(message, cause), CodeChallengeException
+
+    class UnknownException(message: String, cause: Throwable? = null) :
+        Exception(message, cause), CodeChallengeException
+}
