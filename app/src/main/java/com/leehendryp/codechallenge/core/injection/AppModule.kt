@@ -15,11 +15,10 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal object AppModule {
     @Provides
-    fun provideApplicationContext(@ApplicationContext context: Context): Context = context as CodeChallengeApp
+    fun provideApplicationContext(@ApplicationContext context: Context): Context =
+        context as CodeChallengeApp
 
     @Provides
-    fun provideConnectivityManager(context: Context): ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    @Provides
-    fun provideNetworkCallbackRegistrar(connectivityManager: ConnectivityManager): NetworkStatusHelper = NetworkStatusHelperImpl(connectivityManager)
+    fun provideConnectivityManager(context: Context): ConnectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 }

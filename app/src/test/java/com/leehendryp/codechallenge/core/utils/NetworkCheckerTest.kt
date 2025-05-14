@@ -24,12 +24,12 @@ import org.robolectric.RobolectricTestRunner
 class NetworkCheckerTest {
 
     private lateinit var registrar: NetworkStatusHelper
-    private lateinit var checker: NetworkChecker
+    private lateinit var checker: NetworkCheckerImpl
 
     @Before
     fun setup() {
         registrar = mockk(relaxed = true)
-        checker = NetworkChecker(registrar)
+        checker = NetworkCheckerImpl(registrar)
     }
 
     @Test

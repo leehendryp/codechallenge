@@ -8,11 +8,15 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
-internal class NetworkChecker @Inject constructor(
-    private val registrar: NetworkStatusHelper,
-) {
+internal interface NetworkChecker {
+    fun isConnected(): Flow<Boolean>
+}
 
-    fun isConnected(): Flow<Boolean> = callbackFlow {
+internal class NetworkCheckerImpl @Inject constructor(
+    private val registrar: NetworkStatusHelper,
+) : NetworkChecker {
+
+    override fun isConnected(): Flow<Boolean> = callbackFlow {
         trySend(registrar.hasConnection())
 
         val callback = object : ConnectivityManager.NetworkCallback() {

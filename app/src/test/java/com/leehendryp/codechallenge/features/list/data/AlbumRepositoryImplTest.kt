@@ -3,8 +3,6 @@ package com.leehendryp.codechallenge.features.list.data
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.testing.asPagingSourceFactory
 import androidx.paging.testing.asSnapshot
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientException
 import com.leehendryp.codechallenge.core.domain.RETRIEVAL_ERROR
 import com.leehendryp.codechallenge.core.utils.EXCEPTION_FAILURE
@@ -14,12 +12,13 @@ import com.leehendryp.codechallenge.features.list.data.model.MockDataModels
 import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
 import com.leehendryp.codechallenge.features.list.domain.Album
 import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.utils.AlbumDiffCallback
+import com.leehendryp.codechallenge.features.utils.ListUpdateCallback
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -106,8 +105,8 @@ internal class AlbumRepositoryImplTest {
         val result = mutableListOf<List<Album>>()
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = AlbumDiffCallback(),
-            updateCallback = UpdateListUpdateCallback(),
+            diffCallback = AlbumDiffCallback,
+            updateCallback = ListUpdateCallback,
         )
 
         differ.addOnPagesUpdatedListener {
@@ -163,19 +162,4 @@ internal class AlbumRepositoryImplTest {
             assertThat(exception.cause?.cause, equalTo(cause))
         }
     }
-}
-
-private class AlbumDiffCallback : DiffUtil.ItemCallback<Album>() {
-    override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean =
-        oldItem.id == newItem.id
-
-    override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean =
-        oldItem == newItem
-}
-
-private class UpdateListUpdateCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int) {}
-    override fun onRemoved(position: Int, count: Int) {}
-    override fun onMoved(fromPosition: Int, toPosition: Int) {}
-    override fun onChanged(position: Int, count: Int, payload: Any?) {}
 }
