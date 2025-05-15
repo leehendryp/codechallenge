@@ -24,6 +24,8 @@ jobs:
       - name: Create keys.properties
         run: |
           echo "api.host=${{ secrets.API_HOST }}" > keys.properties
+          echo "api.path=${{ secrets.API_PATH }}" >> keys.properties
+          echo "api.user.agent=${{ secrets.API_USER_AGENT }}" >> keys.properties
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4

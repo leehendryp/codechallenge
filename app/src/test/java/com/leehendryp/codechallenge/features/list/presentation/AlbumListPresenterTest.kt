@@ -1,6 +1,5 @@
 package com.leehendryp.codechallenge.features.list.presentation
 
-import android.service.autofill.Validators.not
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientException
