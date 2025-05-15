@@ -1,19 +1,16 @@
 package com.leehendryp.codechallenge.core.presentation
 
-import kotlinx.coroutines.Dispatchers
+import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -35,12 +32,13 @@ internal class BasePresenterTest {
         data object SomeSideEffect : UISideEffect
     }
 
+    @get:Rule
+    internal val coroutineRule = MainCoroutineRule()
+
     private lateinit var presenter: BasePresenter<Intent, UIState, UISideEffect>
-    private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun `set up`() {
-        Dispatchers.setMain(testDispatcher)
         presenter = object : BasePresenter<Intent, UIState, UISideEffect>() {
             override fun setInitialState(): UIState = UIState.InitialUIState
             override fun process(intent: Intent) {
@@ -52,13 +50,6 @@ internal class BasePresenterTest {
             }
         }
     }
-
-    @After
-    fun `tear down`() {
-        Dispatchers.resetMain()
-    }
-
-    private fun getUIState() = presenter.uiState.value
 
     @Test
     fun `initialization should default to result of setInitialState`() = runTest {
@@ -104,6 +95,7 @@ internal class BasePresenterTest {
             UIState.SomeUIState,
         )
         val result = presenter.uiState.take(expected.size).toList()
+        advanceUntilIdle()
 
         assertThat(result, equalTo(expected))
     }
@@ -114,7 +106,10 @@ internal class BasePresenterTest {
 
         val expected = listOf(UIState.InitialUIState, UIState.SomeUIState, UIState.SomeOtherUIState)
         val result = presenter.uiState.take(expected.size).toList()
+        advanceUntilIdle()
 
         assertThat(result, equalTo(expected))
     }
+
+    private fun getUIState() = presenter.uiState.value
 }

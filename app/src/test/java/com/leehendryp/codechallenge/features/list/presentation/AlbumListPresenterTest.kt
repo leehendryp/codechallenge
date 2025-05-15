@@ -13,12 +13,10 @@ import com.leehendryp.codechallenge.features.list.presentation.UIState.Snackbar
 import com.leehendryp.codechallenge.features.list.presentation.UIState.Status
 import com.leehendryp.codechallenge.features.utils.AlbumDiffCallback
 import com.leehendryp.codechallenge.features.utils.ListUpdateCallback
-import com.leehendryp.codechallenge.features.utils.albumSnapshot
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
-import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -29,7 +27,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -128,7 +125,7 @@ class AlbumListPresenterTest {
     Lee May 14, 2025: Everything involving Paging3 API is excessively hard to test via unit tests.
     Part of the difficulty resides in it being an API meant to provide data via a cold asynchronous
     stream.
-    */
+     */
     @Test
     fun `when intent is GetAlbums, should properly update UI state`() = runTest {
         val pagingDataFlow = flowOf(PagingData.from(MockDomainModels.mockAlbums))

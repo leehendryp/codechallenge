@@ -131,7 +131,7 @@ internal class AlbumRepositoryImplTest {
         val message = "Error"
         val cause = Throwable()
         coEvery { remoteDataSource.fetchAlbums() } returns
-                flow { throw ClientException(message, cause) }
+            flow { throw ClientException(message, cause) }
         coEvery { localDataSource.getPagedAlbums() } returns pagingSource
 
         try {

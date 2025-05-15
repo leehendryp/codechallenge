@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
+
 @ExperimentalCoroutinesApi
 internal class MainCoroutineRule(
     private val testDispatcher: TestDispatcher = StandardTestDispatcher(),

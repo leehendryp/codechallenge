@@ -209,7 +209,6 @@ private fun PagingLoadingWheel() {
     }
 }
 
-
 @Composable
 private fun HandleEmptyListOnCompleteSourceLoading(
     lazyPagingItems: LazyPagingItems<Album>,
@@ -217,8 +216,8 @@ private fun HandleEmptyListOnCompleteSourceLoading(
 ) {
     val isEmpty = with(lazyPagingItems.loadState) {
         source.refresh is LoadState.NotLoading &&
-                append.endOfPaginationReached &&
-                lazyPagingItems.itemCount == 0
+            append.endOfPaginationReached &&
+            lazyPagingItems.itemCount == 0
     }
 
     LaunchedEffect(isEmpty) {
@@ -236,11 +235,11 @@ private fun AlbumListContentPreview() {
             PagingData.from(
                 data = MockDomainModels.mockAlbums,
                 sourceLoadStates =
-                    LoadStates(
-                        refresh = LoadState.NotLoading(false),
-                        append = LoadState.NotLoading(false),
-                        prepend = LoadState.NotLoading(false),
-                    ),
+                LoadStates(
+                    refresh = LoadState.NotLoading(false),
+                    append = LoadState.NotLoading(false),
+                    prepend = LoadState.NotLoading(false),
+                ),
             ),
         )
 

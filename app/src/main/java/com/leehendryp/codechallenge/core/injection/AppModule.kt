@@ -3,8 +3,6 @@ package com.leehendryp.codechallenge.core.injection
 import android.content.Context
 import android.net.ConnectivityManager
 import com.leehendryp.codechallenge.core.CodeChallengeApp
-import com.leehendryp.codechallenge.core.utils.NetworkStatusHelper
-import com.leehendryp.codechallenge.core.utils.NetworkStatusHelperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,10 +13,8 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal object AppModule {
     @Provides
-    fun provideApplicationContext(@ApplicationContext context: Context): Context =
-        context as CodeChallengeApp
+    fun provideApplicationContext(@ApplicationContext context: Context): Context = context as CodeChallengeApp
 
     @Provides
-    fun provideConnectivityManager(context: Context): ConnectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    fun provideConnectivityManager(context: Context): ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 }
