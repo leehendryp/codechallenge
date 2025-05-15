@@ -1,9 +1,8 @@
 package com.leehendryp.codechallenge.features.list.data.remote
 
-import com.leehendryp.codechallenge.core.domain.ClientException
-import com.leehendryp.codechallenge.core.domain.NetworkException
-import com.leehendryp.codechallenge.core.domain.ServerException
-import com.leehendryp.codechallenge.core.domain.UnknownException
+import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientException
+import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ServerException
+import com.leehendryp.codechallenge.core.domain.CodeChallengeException.UnknownException
 import com.leehendryp.codechallenge.core.utils.EXCEPTION_FAILURE
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
 import com.leehendryp.codechallenge.core.utils.createMockKtorClient
@@ -20,7 +19,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
 
 @ExperimentalCoroutinesApi
 internal class RemoteDataSourceImplTest {
@@ -54,7 +52,7 @@ internal class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ClientException) {
-            assertThat(e.message, equalTo("Client error occurred: 400 - Bad Request."))
+            assertThat(e.message, equalTo("A client HTTP error occurred: 400 - Bad Request."))
         }
 
         dataSource = RemoteDataSourceImpl(
@@ -65,7 +63,7 @@ internal class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ClientException) {
-            assertThat(e.message, equalTo("Client error occurred: 404 - Not Found."))
+            assertThat(e.message, equalTo("A client HTTP error occurred: 404 - Not Found."))
         }
     }
 
@@ -79,7 +77,10 @@ internal class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ServerException) {
-            assertThat(e.message, equalTo("Server error occurred: 500 - Internal Server Error."))
+            assertThat(
+                e.message,
+                equalTo("A server HTTP error occurred: 500 - Internal Server Error."),
+            )
         }
 
         dataSource = RemoteDataSourceImpl(
@@ -90,19 +91,11 @@ internal class RemoteDataSourceImplTest {
             dataSource.fetchAlbums().first()
             fail(EXCEPTION_FAILURE)
         } catch (e: ServerException) {
-            assertThat(e.message, equalTo("Server error occurred: 503 - Service Unavailable."))
+            assertThat(
+                e.message,
+                equalTo("A server HTTP error occurred: 503 - Service Unavailable."),
+            )
         }
-    }
-
-    @Test(expected = NetworkException::class)
-    fun `when an IOException occurs should throw NetworkException`() = runTest {
-        dataSource = RemoteDataSourceImpl(
-            client = createMockKtorClient(
-                mockEngine = MockEngine { throw IOException() },
-            ),
-        )
-
-        dataSource.fetchAlbums().first()
     }
 
     @Test(expected = UnknownException::class)

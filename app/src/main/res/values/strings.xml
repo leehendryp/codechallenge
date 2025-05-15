@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">CodeChallenge</string>
     <string name="feed_title_albums">Albums</string>
-    <string name="feed_message_empty_state">Oops, nothing to show.</string>
+    <string name="feed_retry_client_issue">Please, make sure you are online and retry.</string>
+    <string name="feed_retry_server_issue">An error occurred on our servers. Please, retry in a few minutes.</string>
+    <string name="feed_retry_call_to_action">Retry</string>
+    <string name="feed_empty">No data available.</string>
+    <string name="feed_error">An error occurred.</string>
 </resources>

@@ -1,9 +1,9 @@
 package com.leehendryp.codechallenge.features.list.data.remote
 
-import com.leehendryp.codechallenge.core.domain.ClientException
-import com.leehendryp.codechallenge.core.domain.NetworkException
-import com.leehendryp.codechallenge.core.domain.ServerException
-import com.leehendryp.codechallenge.core.domain.UnknownException
+import com.leehendryp.codechallenge.BuildConfig
+import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientException
+import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ServerException
+import com.leehendryp.codechallenge.core.domain.CodeChallengeException.UnknownException
 import com.leehendryp.codechallenge.features.list.data.remote.model.AlbumResponse
 import com.leehendryp.codechallenge.features.list.data.remote.model.toDomainModels
 import com.leehendryp.codechallenge.features.list.domain.Album
@@ -24,8 +24,6 @@ import kotlinx.serialization.json.Json
 import java.io.IOException
 import javax.inject.Inject
 
-const val ALBUM_PATH = "img/shared/technical-test.json"
-
 internal class RemoteDataSourceImpl @Inject constructor(
     private val client: HttpClient,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -33,8 +31,8 @@ internal class RemoteDataSourceImpl @Inject constructor(
 
     override fun fetchAlbums(): Flow<List<Album>> = flow {
         val response = client.get {
-            url { path(ALBUM_PATH) }
-            headers.append(HttpHeaders.UserAgent, "CodeChallenge/1.0")
+            url { path(BuildConfig.API_PATH) }
+            headers.append(HttpHeaders.UserAgent, BuildConfig.API_USER_AGENT)
         }
 
         if (!response.status.isSuccess()) throw response.toCodeChallengeException()
@@ -59,16 +57,13 @@ internal class RemoteDataSourceImpl @Inject constructor(
 }
 
 private fun HttpResponse.toCodeChallengeException(): Exception = when (status.value) {
-    in 400..499 -> ClientException("Client error occurred: ${status.value} - ${status.description}.")
-    in 500..599 -> ServerException("Server error occurred: ${status.value} - ${status.description}.")
-    else -> UnknownException(
-        "An unknown error occurred: ${status.value} - ${status.description}.",
-        null,
-    )
+    in 400..499 -> ClientException("A client HTTP error occurred: ${status.value} - ${status.description}.")
+    in 500..599 -> ServerException("A server HTTP error occurred: ${status.value} - ${status.description}.")
+    else -> UnknownException("An unknown HTTP error occurred: ${status.value} - ${status.description}.")
 }
 
-private fun Throwable.toCodeChallengeException() = when (this) {
-    is IOException -> NetworkException("A network error occurred.", this)
+private fun Throwable.toCodeChallengeException(): Exception = when (this) {
+    is IOException -> ClientException("A network error occurred.", this)
     is ClientException, is ServerException -> this
     else -> UnknownException("An unknown error occurred.", this)
 }

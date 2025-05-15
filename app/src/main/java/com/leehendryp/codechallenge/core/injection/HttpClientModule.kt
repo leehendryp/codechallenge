@@ -12,7 +12,6 @@ import io.ktor.client.engine.android.Android
 @Module
 @InstallIn(SingletonComponent::class)
 internal object HttpClientModule {
-
     @Provides
     fun provideHttpClientEngine(): HttpClientEngine = Android.create()
 

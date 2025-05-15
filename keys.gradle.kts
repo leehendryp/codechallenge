@@ -13,6 +13,8 @@ private fun getStringFromKeysFile(property: String): String {
 
 private val keys = mapOf(
     "apiHost" to getStringFromKeysFile("api.host"),
+    "apiPath" to getStringFromKeysFile("api.path"),
+    "apiUserAgent" to getStringFromKeysFile("api.user.agent"),
 )
 
 rootProject.extensions.extraProperties.set("apiSecrets", keys)

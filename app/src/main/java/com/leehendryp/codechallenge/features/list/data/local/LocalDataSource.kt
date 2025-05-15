@@ -1,9 +1,10 @@
 package com.leehendryp.codechallenge.features.list.data.local
 
+import androidx.paging.PagingSource
+import com.leehendryp.codechallenge.features.list.data.local.model.AlbumEntity
 import com.leehendryp.codechallenge.features.list.domain.Album
-import kotlinx.coroutines.flow.Flow
 
 internal interface LocalDataSource {
-    fun getAlbums(): Flow<List<Album>>
+    fun getPagedAlbums(): PagingSource<Int, AlbumEntity>
     suspend fun save(albums: List<Album>)
 }
