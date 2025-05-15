@@ -1,5 +1,6 @@
 package com.leehendryp.codechallenge.features.list.data.local
 
+import androidx.paging.PagingSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -7,7 +8,6 @@ import com.leehendryp.codechallenge.core.data.database.CodeChallengeDatabase
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
 import com.leehendryp.codechallenge.features.list.data.model.MockDataModels
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -46,11 +46,20 @@ class AlbumDaoTest {
     }
 
     @Test
-    fun `when data has been inserted, getAll() should return it`() = runTest {
+    fun `when data has been inserted, getPagedAlbums should return correct PagingData`() = runTest {
         dao.insertAll(MockDataModels.mockEntities)
 
-        val result = dao.getAll().first()
+        val expected = MockDataModels.mockEntities.sortedBy { it.title }
+        val pagingSource = dao.getPagedAlbums()
+            .load(
+                PagingSource.LoadParams.Refresh(
+                    key = null,
+                    loadSize = 10,
+                    placeholdersEnabled = false,
+                ),
+            )
+        val result = (pagingSource as PagingSource.LoadResult.Page).data
 
-        assertThat(result, equalTo(MockDataModels.mockEntities))
+        assertThat(result, equalTo(expected))
     }
 }

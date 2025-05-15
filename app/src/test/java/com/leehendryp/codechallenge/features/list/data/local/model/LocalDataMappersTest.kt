@@ -11,7 +11,7 @@ class LocalDataMappersTest {
 
     @Test
     fun `when entity values are not null toDomainModel should map values correctly`() {
-        val result = MockDataModels.mockEntities.toDomainModels()
+        val result = MockDataModels.mockEntities.map { it.toDomainModel() }
 
         MatcherAssert.assertThat(result, equalTo(MockDomainModels.mockAlbums))
     }
@@ -25,7 +25,7 @@ class LocalDataMappersTest {
             Album(id = -1, albumId = -1, title = "", url = "", thumbnailUrl = ""),
         )
 
-        val result = entities.toDomainModels()
+        val result = entities.map { it.toDomainModel() }
 
         MatcherAssert.assertThat(result, equalTo(expected))
     }

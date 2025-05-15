@@ -103,6 +103,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons)
 
     implementation(libs.coil.compose)
 
@@ -121,7 +122,12 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
+
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
     implementation(libs.androidx.ui.test.junit4.android)
     implementation(libs.androidx.ui.test.manifest)
@@ -134,6 +140,8 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.ui.test.junit4)
     testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.androidx.paging.common)
+    testImplementation(libs.androidx.paging.testing)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -146,8 +154,14 @@ private fun ApplicationBuildType.getApiSecrets() {
     val keys = rootProject.extra["apiSecrets"] as Map<*, *>
 
     keys["apiHost"]?.let {
-        if (it is String) {
-            buildConfigField("String", "API_HOST", "\"$it\"")
-        }
+        if (it is String) buildConfigField("String", "API_HOST", "\"$it\"")
+    }
+
+    keys["apiPath"]?.let {
+        if (it is String) buildConfigField("String", "API_PATH", "\"$it\"")
+    }
+
+    keys["apiUserAgent"]?.let {
+        if (it is String) buildConfigField("String", "API_USER_AGENT", "\"$it\"")
     }
 }

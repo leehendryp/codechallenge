@@ -1,6 +1,7 @@
 package com.leehendryp.codechallenge.core.injection
 
 import android.content.Context
+import android.net.ConnectivityManager
 import com.leehendryp.codechallenge.core.CodeChallengeApp
 import dagger.Module
 import dagger.Provides
@@ -13,4 +14,7 @@ import dagger.hilt.components.SingletonComponent
 internal object AppModule {
     @Provides
     fun provideApplicationContext(@ApplicationContext context: Context): Context = context as CodeChallengeApp
+
+    @Provides
+    fun provideConnectivityManager(context: Context): ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 }
