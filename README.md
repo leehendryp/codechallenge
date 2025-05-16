@@ -15,8 +15,12 @@ them efficiently with local pagination.
 * Room (local persistence);
 * Paging 3 (pagination);
 * Hilt (dependency injection);
-* Coil (image loading); and
-* MockK and Robolectric (unit testing).
+* Coil (image loading);
+* MockK and Robolectric (unit testing);
+* Spotless (code style);
+* Detekt (code quality);
+* **GitHub Projects** (Kanban board for issue tracking); and
+* **GitHub Actions** (for CI workflows).
 
 ## Features
 * Unidirectional data flow via MVI + Clean Architecture;
@@ -77,8 +81,8 @@ to provide efficiently-paged content.
 * Room emits changes to the PagingSource data.
 
 ### Stateless repository pattern
-The repository acts as an abstraction between remote and local data sources, providing a single source of truth
-for synchronized data.
+The repository acts as an abstraction between remote and local data sources, providing a single source
+of truth for synchronized data.
 
 This project intentionally avoids keeping state in the repository layer to:
 
@@ -87,6 +91,28 @@ This project intentionally avoids keeping state in the repository layer to:
 * Avoid tightly coupling repository state to the UI lifecycle;
 * Delegate state interpretation to observers (such as MVI Presenters); and
 * Facilitate testing and debugging.
+
+## Tooling & Project Management
+
+### GitHub Projects (Kanban)
+This project leverages **GitHub Projects** to track issues and tasks in a Kanban-style board. It ensures 
+visibility of ongoing development, bug tracking, and feature planning.
+
+### GitHub Actions (CI)
+Automated workflows are powered by **GitHub Actions**, enabling continuous integration for testing and
+ensuring code quality across changes and pull requests.
+
+The following jobs are defined:
+
+* Spotless: Runs formatting checks and auto-fixes code style violations using Spotless before code analysis
+begins. 
+* Detekt: Executes static code analysis using Detekt to catch potential bugs, code smells, and 
+maintainability issues. 
+* Unit Tests: Runs the test suite against the debug build variant to validate the business logic and
+* architectural correctness.
+
+These jobs are triggered on every pull request targeting the develop or main branches to enforce quality
+gates before merging.
 
 ## Summary
 This project demonstrates a clean, scalable pattern for paginated, offline-first data loading in Android,
