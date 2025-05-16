@@ -243,13 +243,13 @@ internal val highContrastDarkColorScheme = darkColorScheme(
 
 @Composable
 internal fun CodeChallengeTheme(
-    contrastLevel: ContrastLevel = ContrastLevel.Default,
+    contrastLevel: ContrastLevel = rememberContrastLevel(),
+    dimens: Dimens = rememberDimens(),
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     enableDynamicTheming: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
-
     val colorScheme = when {
         enableDynamicTheming && supportsDynamicTheming() -> {
             if (isDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -267,6 +267,7 @@ internal fun CodeChallengeTheme(
     CompositionLocalProvider(
         LocalTintTheme provides tintTheme,
         LocalTypography provides CodeChallengeTypography,
+        LocalDimens provides dimens,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

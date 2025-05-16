@@ -26,7 +26,6 @@ internal class ThemeTest {
     fun typographyCodeChallengeTypography() {
         rule.setContent {
             CodeChallengeTheme(
-                contrastLevel = ContrastLevel.Default,
                 isDarkTheme = false,
                 enableDynamicTheming = false,
             ) {
@@ -129,6 +128,7 @@ internal class ThemeTest {
     fun contrastLevelDefault_isDarkThemeFalse_enableDynamicThemingTrue() {
         rule.setContent {
             CodeChallengeTheme(
+                contrastLevel = ContrastLevel.Default,
                 isDarkTheme = false,
                 enableDynamicTheming = true,
             ) {
@@ -143,12 +143,40 @@ internal class ThemeTest {
     fun contrastLevelDefault_isDarkThemeTrue_enableDynamicThemingTrue() {
         rule.setContent {
             CodeChallengeTheme(
+                contrastLevel = ContrastLevel.Default,
                 isDarkTheme = true,
                 enableDynamicTheming = true,
             ) {
                 val colorScheme = dynamicDarkColorSchemeOrDefault()
                 assertThatColorSchemeEqualTo(colorScheme, MaterialTheme.colorScheme)
                 assertThat(LocalTintTheme.current, equalTo(dynamicTintThemeOrDefault(colorScheme)))
+            }
+        }
+    }
+
+    @Test
+    fun dimensCompact() {
+        rule.setContent {
+            CodeChallengeTheme(dimens = Dimensions.Compact) {
+                assertThat(LocalDimens.current, equalTo(Dimensions.Compact))
+            }
+        }
+    }
+
+    @Test
+    fun dimensMedium() {
+        rule.setContent {
+            CodeChallengeTheme(dimens = Dimensions.Medium) {
+                assertThat(LocalDimens.current, equalTo(Dimensions.Medium))
+            }
+        }
+    }
+
+    @Test
+    fun dimensExpanded() {
+        rule.setContent {
+            CodeChallengeTheme(dimens = Dimensions.Expanded) {
+                assertThat(LocalDimens.current, equalTo(Dimensions.Expanded))
             }
         }
     }
