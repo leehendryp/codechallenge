@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
@@ -47,6 +46,7 @@ import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScree
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.PAGING_PROGRESS_INDICATOR
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.TOP_APP_BAR
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
+import com.leehendryp.codechallenge.ui.theme.LocalDimens
 import com.leehendryp.codechallenge.ui.theme.ThemePreviews
 import kotlinx.coroutines.flow.flowOf
 
@@ -148,6 +148,7 @@ private fun AlbumListContent(
     status: UIState.Status.Content,
     onIntent: (Intent) -> Unit,
 ) {
+    val spacing = LocalDimens.current.spacing
     val lazyPagingItems = status.pagingDataFlow.collectAsLazyPagingItems()
 
     // Show full screen loading for initial refresh
@@ -167,8 +168,8 @@ private fun AlbumListContent(
         modifier = Modifier
             .fillMaxSize()
             .testTag(ALBUM_LIST_LAZY_COLUMN),
-        contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(vertical = spacing.xl, horizontal = spacing.l),
+        verticalArrangement = Arrangement.spacedBy(spacing.l),
     ) {
         items(
             count = lazyPagingItems.itemCount,
@@ -198,11 +199,13 @@ private fun FullScreenLoadingWheel(modifier: Modifier = Modifier) {
 
 @Composable
 private fun PagingLoadingWheel() {
+    val spacing = LocalDimens.current.spacing
+
     Box(
         modifier = Modifier
             .testTag(PAGING_PROGRESS_INDICATOR)
             .fillMaxWidth()
-            .padding(vertical = 16.dp),
+            .padding(vertical = spacing.l),
         contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
