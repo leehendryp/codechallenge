@@ -23,6 +23,7 @@ import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumContentTe
 import com.leehendryp.codechallenge.ui.ds.DSAsyncImage
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTypography
+import com.leehendryp.codechallenge.ui.theme.LocalDimens
 import com.leehendryp.codechallenge.ui.theme.ThemePreviews
 
 @Composable
@@ -30,8 +31,11 @@ internal fun AlbumContent(
     modifier: Modifier = Modifier,
     model: Album,
 ) {
+    val spacing = LocalDimens.current.spacing
+    val stroke = LocalDimens.current.stroke
     val colorScheme = MaterialTheme.colorScheme
-    val roundedCornerShape = RoundedCornerShape(24.dp)
+    val roundedCornerShape = RoundedCornerShape(spacing.xl)
+    val imageSize = 120.dp
 
     Row(
         modifier = modifier
@@ -39,18 +43,18 @@ internal fun AlbumContent(
             .clip(roundedCornerShape)
             .border(
                 border = BorderStroke(
-                    width = 1.dp,
+                    width = stroke.hairline,
                     color = colorScheme.outline,
                 ),
                 shape = roundedCornerShape,
             )
-            .padding(16.dp),
+            .padding(spacing.l),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DSAsyncImage(
             modifier = Modifier
-                .size(120.dp)
-                .clip(RoundedCornerShape(16.dp))
+                .size(imageSize)
+                .clip(RoundedCornerShape(spacing.l))
                 .background(colorScheme.surfaceContainer)
                 .testTag(ALBUM_CONTENT_IMAGE + "_${model.id}"),
             imageUrl = model.thumbnailUrl,
@@ -60,7 +64,7 @@ internal fun AlbumContent(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 24.dp),
+                .padding(start = spacing.xl),
             text = model.title,
             style = CodeChallengeTypography.titleMedium,
         )

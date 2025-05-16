@@ -15,7 +15,7 @@ internal const val DIMENS_TEST_TAG = "DIMENS_TEST_TAG"
 @Immutable
 internal data class Dimens(
     val spacing: Spacing,
-    val strokes: StrokeWidths,
+    val stroke: StrokeWidths,
 )
 
 @Immutable
@@ -54,7 +54,7 @@ internal object Dimensions {
             xxl = 24.dp,
             xxxl = 32.dp,
         ),
-        strokes = StrokeWidths(hairline = 0.5.dp, thin = 1.dp, thick = 2.dp),
+        stroke = StrokeWidths(hairline = 0.5.dp, thin = 1.dp, thick = 2.dp),
     )
 
     val Medium = Dimens(
@@ -68,7 +68,7 @@ internal object Dimensions {
             xxl = 32.dp,
             xxxl = 40.dp,
         ),
-        strokes = StrokeWidths(hairline = 1.dp, thin = 2.dp, thick = 4.dp),
+        stroke = StrokeWidths(hairline = 1.dp, thin = 2.dp, thick = 4.dp),
     )
 
     val Expanded = Dimens(
@@ -82,7 +82,7 @@ internal object Dimensions {
             xxl = 40.dp,
             xxxl = 48.dp,
         ),
-        strokes = StrokeWidths(hairline = 1.dp, thin = 3.dp, thick = 6.dp),
+        stroke = StrokeWidths(hairline = 1.dp, thin = 3.dp, thick = 6.dp),
     )
 }
 
