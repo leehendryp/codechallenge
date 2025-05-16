@@ -2,10 +2,12 @@ package com.leehendryp.codechallenge.ui.theme
 
 import android.content.Context
 import android.view.accessibility.AccessibilityManager
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -14,10 +16,13 @@ import org.robolectric.shadows.ShadowAccessibilityManager
 
 @RunWith(RobolectricTestRunner::class)
 internal class ContrastLevelTest {
+    @get:Rule
+    val composeTestRule = createComposeRule()
 
     private lateinit var context: Context
     private lateinit var accessibilityManager: AccessibilityManager
     private lateinit var shadowAccessibilityManager: ShadowAccessibilityManager
+    private var contrastLevel: ContrastLevel? = null
 
     @Before
     fun setup() {
@@ -25,35 +30,44 @@ internal class ContrastLevelTest {
         accessibilityManager =
             context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
         shadowAccessibilityManager = Shadows.shadowOf(accessibilityManager)
+        contrastLevel = null
     }
 
     @Test
-    fun `when accessibility is off and font size is normal should return Default`() {
-        val shadowAccessibilityManager = Shadows.shadowOf(accessibilityManager)
+    fun `when accessibility is enabled, should return High contrast`() {
+        shadowAccessibilityManager.setEnabled(true)
+        context.resources.configuration.fontScale = 1.0f
+
+        setContentAndWaitForIdle()
+
+        assertThat(contrastLevel, equalTo(ContrastLevel.High))
+    }
+
+    @Test
+    fun `when accessibility is disabled, but font is large, should return Medium contrast`() {
+        shadowAccessibilityManager.setEnabled(false)
+        context.resources.configuration.fontScale = 1.4f
+
+        setContentAndWaitForIdle()
+
+        assertThat(contrastLevel, equalTo(ContrastLevel.Medium))
+    }
+
+    @Test
+    fun `when accessibility is disabled and font is not large, should return Default contrast`() {
         shadowAccessibilityManager.setEnabled(false)
         context.resources.configuration.fontScale = 1.0f
 
-        val result = getContrastLevel(context)
+        setContentAndWaitForIdle()
 
-        assertThat(result, equalTo(ContrastLevel.Default))
+        assertThat(contrastLevel, equalTo(ContrastLevel.Default))
     }
 
-    @Test
-    fun `when font size is large should return Medium`() {
-        shadowAccessibilityManager.setEnabled(false)
-        context.resources.configuration.fontScale = 1.5f
+    private fun setContentAndWaitForIdle() {
+        composeTestRule.setContent {
+            contrastLevel = rememberContrastLevel()
+        }
 
-        val result = getContrastLevel(context)
-
-        assertThat(result, equalTo(ContrastLevel.Medium))
-    }
-
-    @Test
-    fun `when high contrast mode is enabled should return High`() {
-        shadowAccessibilityManager.setEnabled(true)
-
-        val result = getContrastLevel(context)
-
-        assertThat(result, equalTo(ContrastLevel.High))
+        composeTestRule.waitForIdle()
     }
 }

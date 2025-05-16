@@ -2,6 +2,12 @@ package com.leehendryp.codechallenge.ui.theme
 
 import android.content.Context
 import android.view.accessibility.AccessibilityManager
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 
 internal enum class ContrastLevel {
     Default,
@@ -9,16 +15,37 @@ internal enum class ContrastLevel {
     High,
 }
 
-internal fun getContrastLevel(context: Context): ContrastLevel {
-    val accessibilityManager =
-        context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
-    val isHighContrastEnabled = accessibilityManager.isEnabled
-    val configuration = context.resources.configuration
-    val isFontLarge = configuration.fontScale > 1.3
+@Composable
+internal fun rememberContrastLevel(): ContrastLevel {
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
 
-    return when {
-        isHighContrastEnabled -> ContrastLevel.High
-        isFontLarge -> ContrastLevel.Medium
-        else -> ContrastLevel.Default
+    val contrastLevel = remember { mutableStateOf(ContrastLevel.Default) }
+
+    DisposableEffect(context, configuration.fontScale) {
+        val accessibilityManager =
+            context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+
+        val listener = AccessibilityManager.AccessibilityStateChangeListener {
+            contrastLevel.value =
+                getContrastLevel(accessibilityManager.isEnabled, configuration.fontScale)
+        }
+
+        contrastLevel.value =
+            getContrastLevel(accessibilityManager.isEnabled, configuration.fontScale)
+
+        accessibilityManager.addAccessibilityStateChangeListener(listener)
+
+        onDispose {
+            accessibilityManager.removeAccessibilityStateChangeListener(listener)
+        }
     }
+
+    return contrastLevel.value
+}
+
+private fun getContrastLevel(isHighContrastEnabled: Boolean, fontScale: Float): ContrastLevel = when {
+    isHighContrastEnabled -> ContrastLevel.High
+    fontScale > 1.3f -> ContrastLevel.Medium
+    else -> ContrastLevel.Default
 }
