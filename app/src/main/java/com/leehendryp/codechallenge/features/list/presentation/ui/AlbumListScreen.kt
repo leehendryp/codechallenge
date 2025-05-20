@@ -14,17 +14,10 @@ import androidx.compose.material.icons.filled.DataArray
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -44,7 +37,6 @@ import com.leehendryp.codechallenge.features.list.presentation.UIState
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.ALBUM_LIST_LAZY_COLUMN
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.FULL_SCREEN_PROGRESS_INDICATOR
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.PAGING_PROGRESS_INDICATOR
-import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.TOP_APP_BAR
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.LocalDimens
 import com.leehendryp.codechallenge.ui.theme.ThemePreviews
@@ -54,10 +46,15 @@ import kotlinx.coroutines.flow.flowOf
 internal fun AlbumListScreen(
     modifier: Modifier = Modifier,
     presenter: AlbumListPresenter,
+    snackbarHostState: SnackbarHostState,
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
 
-    AlbumListScreenContent(modifier, uiState) { intent ->
+    AlbumListScreenContent(
+        modifier = modifier,
+        uiState = uiState,
+        snackbarHostState = snackbarHostState,
+    ) { intent ->
         presenter.dispatch(intent)
     }
 }
@@ -67,13 +64,12 @@ internal fun AlbumListScreen(
 internal fun AlbumListScreenContent(
     modifier: Modifier = Modifier,
     uiState: UIState,
+    snackbarHostState: SnackbarHostState,
     onIntent: (Intent) -> Unit,
 ) {
     LaunchedEffect(Unit) {
         onIntent(Intent.GetAlbums)
     }
-
-    val snackbarHostState = remember { SnackbarHostState() }
 
     uiState.snackbar?.let { snackBar ->
         val message = when (snackBar) {
@@ -85,59 +81,41 @@ internal fun AlbumListScreenContent(
         }
     }
 
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.testTag(TOP_APP_BAR),
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                ),
-                title = {
-                    Text(stringResource(R.string.feed_title_albums))
-                },
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        when (val status = uiState.status) {
+            is UIState.Status.LoadingList -> FullScreenLoadingWheel()
+
+            is UIState.Status.Content -> AlbumListContent(
+                status = status,
+                onIntent = onIntent,
             )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            when (val status = uiState.status) {
-                is UIState.Status.LoadingList -> FullScreenLoadingWheel()
 
-                is UIState.Status.Content -> AlbumListContent(
-                    status = status,
-                    onIntent = onIntent,
-                )
+            is UIState.Status.ClientRetry -> RetryContent(
+                icon = Icons.Default.WifiOff,
+                message = R.string.feed_retry_client_issue,
+                hasConnection = uiState.hasConnection,
+            ) {
+                onIntent(Intent.GetAlbums)
+            }
 
-                is UIState.Status.ClientRetry -> RetryContent(
-                    icon = Icons.Default.WifiOff,
-                    message = R.string.feed_retry_client_issue,
-                    hasConnection = uiState.hasConnection,
-                ) {
-                    onIntent(Intent.GetAlbums)
-                }
+            is UIState.Status.ServerRetry -> RetryContent(
+                icon = Icons.Default.Close,
+                message = R.string.feed_retry_server_issue,
+                hasConnection = uiState.hasConnection,
+            ) {
+                onIntent(Intent.GetAlbums)
+            }
 
-                is UIState.Status.ServerRetry -> RetryContent(
-                    icon = Icons.Default.Close,
-                    message = R.string.feed_retry_server_issue,
-                    hasConnection = uiState.hasConnection,
-                ) {
-                    onIntent(Intent.GetAlbums)
-                }
-
-                is UIState.Status.Empty -> RetryContent(
-                    icon = Icons.Default.DataArray,
-                    message = R.string.feed_empty,
-                    hasConnection = uiState.hasConnection,
-                ) {
-                    onIntent(Intent.GetAlbums)
-                }
+            is UIState.Status.Empty -> RetryContent(
+                icon = Icons.Default.DataArray,
+                message = R.string.feed_empty,
+                hasConnection = uiState.hasConnection,
+            ) {
+                onIntent(Intent.GetAlbums)
             }
         }
     }
@@ -253,6 +231,7 @@ private fun AlbumListContentPreview() {
                 ),
                 hasConnection = true,
             ),
+            snackbarHostState = SnackbarHostState(),
         ) {}
     }
 }
@@ -266,6 +245,7 @@ private fun EmptyContentPreview() {
                 status = UIState.Status.Empty,
                 hasConnection = true,
             ),
+            snackbarHostState = SnackbarHostState(),
         ) {}
     }
 }

@@ -1,5 +1,6 @@
 package com.leehendryp.codechallenge.features.list.presentation
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -9,9 +10,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal object AlbumListRoute
 
-internal fun NavGraphBuilder.albumListGraph() {
+internal fun NavGraphBuilder.albumListGraph(snackbarHostState: SnackbarHostState) {
     composable<AlbumListRoute> {
         val presenter: AlbumListPresenter = hiltViewModel()
-        AlbumListScreen(presenter = presenter)
+        AlbumListScreen(snackbarHostState = snackbarHostState, presenter = presenter)
     }
 }

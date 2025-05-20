@@ -1,5 +1,6 @@
 package com.leehendryp.codechallenge.features.list.presentation.ui
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -223,7 +224,10 @@ internal class AlbumListContentTest {
     private fun ComposeContentTestRule.setContentWithUIState(uiState: UIState) {
         setContent {
             CodeChallengeTheme {
-                AlbumListScreenContent(uiState = uiState) {}
+                AlbumListScreenContent(
+                    uiState = uiState,
+                    snackbarHostState = SnackbarHostState(),
+                ) {}
             }
         }
     }
