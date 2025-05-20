@@ -5,20 +5,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.leehendryp.codechallenge.features.list.presentation.AlbumListRoute
+import com.leehendryp.codechallenge.features.details.presentation.ui.albumDetailsGraph
+import com.leehendryp.codechallenge.features.details.presentation.ui.toDetails
+import com.leehendryp.codechallenge.features.list.presentation.AlbumList
 import com.leehendryp.codechallenge.features.list.presentation.albumListGraph
 
 @Composable
 internal fun AppNavGraph(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
-        startDestination = AlbumListRoute,
+        startDestination = AlbumList,
         modifier = modifier,
     ) {
-        albumListGraph(snackbarHostState)
+        albumListGraph(snackbarHostState) {
+            navController.toDetails()
+        }
+        albumDetailsGraph()
     }
 }

@@ -3,6 +3,7 @@ package com.leehendryp.codechallenge.features.list.presentation.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import com.leehendryp.codechallenge.ui.theme.ThemePreviews
 internal fun AlbumContent(
     modifier: Modifier = Modifier,
     model: Album,
+    onClick: () -> Unit,
 ) {
     val spacing = LocalDimens.current.spacing
     val stroke = LocalDimens.current.stroke
@@ -48,6 +50,7 @@ internal fun AlbumContent(
                 ),
                 shape = roundedCornerShape,
             )
+            .clickable { onClick() }
             .padding(spacing.l),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -77,7 +80,7 @@ private fun AlbumContentPreview() {
     CodeChallengeTheme {
         AlbumContent(
             model = MockDomainModels.mockAlbums.first(),
-        )
+        ) {}
     }
 }
 

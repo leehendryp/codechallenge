@@ -22,10 +22,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.leehendryp.codechallenge.core.presentation.navigation.AlbumList
 import com.leehendryp.codechallenge.core.presentation.navigation.AppNavGraph
 import com.leehendryp.codechallenge.core.presentation.navigation.Destination
 import com.leehendryp.codechallenge.core.presentation.navigation.screens
+import com.leehendryp.codechallenge.features.list.presentation.AlbumList
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.LocalDimens
 import dagger.hilt.android.AndroidEntryPoint

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DataArray
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -33,6 +35,7 @@ import com.leehendryp.codechallenge.features.list.domain.Album
 import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.AlbumListPresenter
 import com.leehendryp.codechallenge.features.list.presentation.Intent
+import com.leehendryp.codechallenge.features.list.presentation.UISideEffect
 import com.leehendryp.codechallenge.features.list.presentation.UIState
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.ALBUM_LIST_LAZY_COLUMN
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.FULL_SCREEN_PROGRESS_INDICATOR
@@ -45,8 +48,9 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 internal fun AlbumListScreen(
     modifier: Modifier = Modifier,
-    presenter: AlbumListPresenter,
     snackbarHostState: SnackbarHostState,
+    presenter: AlbumListPresenter,
+    onNavigate: () -> Unit,
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
 
@@ -56,6 +60,14 @@ internal fun AlbumListScreen(
         snackbarHostState = snackbarHostState,
     ) { intent ->
         presenter.dispatch(intent)
+    }
+
+    LaunchedEffect(Unit) {
+        presenter.uiSideEffect.collect { effect ->
+            when (effect) {
+                is UISideEffect.GoToDetails -> onNavigate()
+            }
+        }
     }
 }
 
@@ -67,10 +79,6 @@ internal fun AlbumListScreenContent(
     snackbarHostState: SnackbarHostState,
     onIntent: (Intent) -> Unit,
 ) {
-    LaunchedEffect(Unit) {
-        onIntent(Intent.GetAlbums)
-    }
-
     uiState.snackbar?.let { snackBar ->
         val message = when (snackBar) {
             UIState.Snackbar.Error -> stringResource(R.string.feed_error)
@@ -87,7 +95,13 @@ internal fun AlbumListScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         when (val status = uiState.status) {
-            is UIState.Status.LoadingList -> FullScreenLoadingWheel()
+            is UIState.Status.LoadingList -> {
+                FullScreenLoadingWheel()
+
+                LaunchedEffect(Unit) {
+                    onIntent(Intent.GetAlbums)
+                }
+            }
 
             is UIState.Status.Content -> AlbumListContent(
                 status = status,
@@ -129,16 +143,7 @@ private fun AlbumListContent(
     val spacing = LocalDimens.current.spacing
     val lazyPagingItems = status.pagingDataFlow.collectAsLazyPagingItems()
 
-    // Show full screen loading for initial refresh
-    when (val loadState = lazyPagingItems.loadState.refresh) {
-        is LoadState.Loading -> {
-            FullScreenLoadingWheel()
-            return
-        }
-
-        is LoadState.Error -> onIntent(Intent.HandleError(loadState.error))
-        else -> Unit
-    }
+    if (showLoadingOnRefreshState(lazyPagingItems.loadState, onIntent)) return
 
     HandleEmptyListOnCompleteSourceLoading(lazyPagingItems, onIntent)
 
@@ -154,19 +159,44 @@ private fun AlbumListContent(
             key = { index -> lazyPagingItems[index]?.id ?: index },
         ) { index ->
             lazyPagingItems[index]?.let { album ->
-                AlbumContent(model = album)
+                AlbumContent(model = album) {
+                    onIntent(Intent.SeeDetails)
+                }
             }
         }
 
-        // Show bottom-loading spinner for pagination
-        when (val appendState = lazyPagingItems.loadState.append) {
-            is LoadState.Loading -> item {
-                PagingLoadingWheel()
-            }
+        handleAppendState(lazyPagingItems.loadState, onIntent)
+    }
+}
 
-            is LoadState.Error -> onIntent(Intent.HandleError(appendState.error))
-            else -> Unit
+@Composable
+private fun showLoadingOnRefreshState(
+    loadStates: CombinedLoadStates,
+    onIntent: (Intent) -> Unit,
+): Boolean {
+    when (val loadState = loadStates.refresh) {
+        is LoadState.Loading -> {
+            FullScreenLoadingWheel()
+            return true
         }
+
+        is LoadState.Error -> onIntent(Intent.HandleError(loadState.error))
+        else -> Unit
+    }
+    return false
+}
+
+private fun LazyListScope.handleAppendState(
+    loadStates: CombinedLoadStates,
+    onIntent: (Intent) -> Unit,
+) {
+    when (val appendState = loadStates.append) {
+        is LoadState.Loading -> item {
+            PagingLoadingWheel()
+        }
+
+        is LoadState.Error -> onIntent(Intent.HandleError(appendState.error))
+        else -> Unit
     }
 }
 

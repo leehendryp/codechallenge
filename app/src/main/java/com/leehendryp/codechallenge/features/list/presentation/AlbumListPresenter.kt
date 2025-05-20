@@ -22,6 +22,7 @@ internal sealed interface Intent {
     data object GetAlbums : Intent
     object HandleNoItems : Intent
     data class HandleError(val error: Throwable) : Intent
+    data object SeeDetails : Intent
 }
 
 internal data class UIState(
@@ -51,7 +52,9 @@ internal data class UIState(
     }
 }
 
-internal sealed interface UISideEffect // Lee: No use, for now.
+internal sealed interface UISideEffect {
+    data object GoToDetails : UISideEffect
+}
 
 @HiltViewModel
 internal class AlbumListPresenter @Inject constructor(
@@ -74,6 +77,7 @@ internal class AlbumListPresenter @Inject constructor(
             is Intent.HandleNoItems -> updateState { copy(status = Status.Empty) }
             is Intent.HandleError -> handleError(intent.error)
             is Intent.NetworkChanged -> updateState { copy(hasConnection = intent.hasConnection) }
+            is Intent.SeeDetails -> sendSideEffect { UISideEffect.GoToDetails }
         }
     }
 
