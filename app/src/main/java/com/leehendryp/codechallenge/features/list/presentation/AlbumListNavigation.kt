@@ -20,12 +20,12 @@ internal data object AlbumList : Destination {
 
 internal fun NavGraphBuilder.albumListGraph(
     snackbarHostState: SnackbarHostState,
-    onNavigate: () -> Unit,
+    onNavigate: (id: Int) -> Unit,
 ) {
     composable<AlbumList> {
         val presenter: AlbumListPresenter = hiltViewModel()
-        AlbumListScreen(snackbarHostState = snackbarHostState, presenter = presenter) {
-            onNavigate()
+        AlbumListScreen(snackbarHostState = snackbarHostState, presenter = presenter) { id ->
+            onNavigate(id)
         }
     }
 }

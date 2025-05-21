@@ -12,6 +12,9 @@ interface AlbumDao {
     @Query("SELECT * FROM album ORDER BY title ASC")
     fun getPagedAlbums(): PagingSource<Int, AlbumEntity>
 
+    @Query("SELECT * FROM album WHERE id = :id")
+    fun getAlbum(id: Int): AlbumEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(albums: List<AlbumEntity>)
 }

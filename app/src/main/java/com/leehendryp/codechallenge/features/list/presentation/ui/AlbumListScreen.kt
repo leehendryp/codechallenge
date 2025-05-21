@@ -50,7 +50,7 @@ internal fun AlbumListScreen(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
     presenter: AlbumListPresenter,
-    onNavigate: () -> Unit,
+    onNavigate: (id: Int) -> Unit,
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
 
@@ -65,7 +65,7 @@ internal fun AlbumListScreen(
     LaunchedEffect(Unit) {
         presenter.uiSideEffect.collect { effect ->
             when (effect) {
-                is UISideEffect.GoToDetails -> onNavigate()
+                is UISideEffect.GoToDetails -> onNavigate(effect.id)
             }
         }
     }
@@ -160,7 +160,7 @@ private fun AlbumListContent(
         ) { index ->
             lazyPagingItems[index]?.let { album ->
                 AlbumContent(model = album) {
-                    onIntent(Intent.SeeDetails)
+                    onIntent(Intent.SeeDetails(album.id))
                 }
             }
         }
