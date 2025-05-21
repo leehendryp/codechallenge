@@ -13,6 +13,8 @@ internal interface Destination {
     val title: Int
 
     val icon: ImageVector
+
+    fun matchesRoute(currentRoute: String?): Boolean = currentRoute?.startsWith(route) == true
 }
 
 internal val screens = listOf(

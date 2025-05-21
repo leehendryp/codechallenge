@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,14 +51,16 @@ internal class MainActivity : ComponentActivity() {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
-        val currentScreen = screens.find { it.route == currentDestination?.route } ?: AlbumList
+        val currentScreen = screens.find { it.matchesRoute(currentDestination?.route) } ?: AlbumList
         val snackbarHostState = remember { SnackbarHostState() }
 
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { TopBarTitle(currentScreen) },
-                )
+                Crossfade(currentScreen) { currentScreen ->
+                    TopAppBar(
+                        title = { TopBarTitle(currentScreen) },
+                    )
+                }
             },
             snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { innerPadding ->

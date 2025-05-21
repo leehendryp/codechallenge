@@ -3,6 +3,7 @@ package com.leehendryp.codechallenge.features.list.data.local
 import androidx.paging.PagingSource
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientException
 import com.leehendryp.codechallenge.core.domain.INSERTION_ERROR
+import com.leehendryp.codechallenge.core.domain.NO_SUCH_ITEM_ERROR
 import com.leehendryp.codechallenge.core.domain.RETRIEVAL_ERROR
 import com.leehendryp.codechallenge.features.list.data.local.model.AlbumEntity
 import com.leehendryp.codechallenge.features.list.data.local.model.toLocalDataModels
@@ -23,5 +24,11 @@ internal class LocalDataSourceImpl @Inject constructor(
         dao.insertAll(albums.toLocalDataModels())
     } catch (cause: Throwable) {
         throw ClientException(INSERTION_ERROR, cause)
+    }
+
+    override suspend fun getAlbum(id: Int): AlbumEntity = try {
+        dao.getAlbum(id)
+    } catch (cause: Throwable) {
+        throw ClientException(NO_SUCH_ITEM_ERROR, cause)
     }
 }

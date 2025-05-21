@@ -9,4 +9,5 @@ should not be a bigger issue in the domain layer.
  */
 internal interface AlbumRepository {
     fun getAlbums(): Flow<PagingData<Album>>
+    fun getAlbum(id: Int): Flow<Album>
 }

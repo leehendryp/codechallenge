@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DataArray
 import androidx.compose.material.icons.filled.WifiOff
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -38,8 +37,8 @@ import com.leehendryp.codechallenge.features.list.presentation.Intent
 import com.leehendryp.codechallenge.features.list.presentation.UISideEffect
 import com.leehendryp.codechallenge.features.list.presentation.UIState
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.ALBUM_LIST_LAZY_COLUMN
-import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.FULL_SCREEN_PROGRESS_INDICATOR
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.PAGING_PROGRESS_INDICATOR
+import com.leehendryp.codechallenge.ui.ds.DSCircularProgressIndicator
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.LocalDimens
 import com.leehendryp.codechallenge.ui.theme.ThemePreviews
@@ -81,7 +80,7 @@ internal fun AlbumListScreenContent(
 ) {
     uiState.snackbar?.let { snackBar ->
         val message = when (snackBar) {
-            UIState.Snackbar.Error -> stringResource(R.string.feed_error)
+            UIState.Snackbar.Error -> stringResource(R.string.generic_error)
         }
 
         LaunchedEffect(snackBar) {
@@ -96,7 +95,7 @@ internal fun AlbumListScreenContent(
     ) {
         when (val status = uiState.status) {
             is UIState.Status.LoadingList -> {
-                FullScreenLoadingWheel()
+                DSCircularProgressIndicator()
 
                 LaunchedEffect(Unit) {
                     onIntent(Intent.GetAlbums)
@@ -176,7 +175,7 @@ private fun showLoadingOnRefreshState(
 ): Boolean {
     when (val loadState = loadStates.refresh) {
         is LoadState.Loading -> {
-            FullScreenLoadingWheel()
+            DSCircularProgressIndicator()
             return true
         }
 
@@ -201,11 +200,6 @@ private fun LazyListScope.handleAppendState(
 }
 
 @Composable
-private fun FullScreenLoadingWheel(modifier: Modifier = Modifier) {
-    CircularProgressIndicator(modifier = modifier.testTag(FULL_SCREEN_PROGRESS_INDICATOR))
-}
-
-@Composable
 private fun PagingLoadingWheel() {
     val spacing = LocalDimens.current.spacing
 
@@ -216,7 +210,7 @@ private fun PagingLoadingWheel() {
             .padding(vertical = spacing.l),
         contentAlignment = Alignment.Center,
     ) {
-        CircularProgressIndicator()
+        DSCircularProgressIndicator()
     }
 }
 
@@ -282,7 +276,6 @@ private fun EmptyContentPreview() {
 
 internal object AlbumListScreenTestTags {
     const val TOP_APP_BAR = "TOP_BAR"
-    const val FULL_SCREEN_PROGRESS_INDICATOR = "FULL_SCREEN_PROGRESS_INDICATOR"
     const val PAGING_PROGRESS_INDICATOR = "PAGING_PROGRESS_INDICATOR"
     const val ALBUM_LIST_LAZY_COLUMN = "ALBUM_LIST_LAZY_COLUMN"
 }

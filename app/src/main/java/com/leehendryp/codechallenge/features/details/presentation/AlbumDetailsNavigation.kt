@@ -2,6 +2,7 @@ package com.leehendryp.codechallenge.features.details.presentation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -20,9 +21,11 @@ internal data object AlbumDetails : Destination {
     override val title: Int = R.string.top_bar_title_details
 
     val routeWithArgs = "$route/{$ALBUM_DETAILS_ID}"
+
     val arguments = listOf(
         navArgument(ALBUM_DETAILS_ID) { type = NavType.IntType },
     )
+
     const val ALBUM_DETAILS_ID = "id"
 }
 
@@ -33,8 +36,13 @@ internal fun NavGraphBuilder.albumDetailsGraph() {
         route = AlbumDetails.routeWithArgs,
         arguments = AlbumDetails.arguments,
     ) { backStackEntry ->
+        val presenter: AlbumDetailsPresenter = hiltViewModel()
+
         backStackEntry.arguments?.getInt(ALBUM_DETAILS_ID)?.let { id ->
-            AlbumDetailsScreen(albumDetailsId = id)
+            AlbumDetailsScreen(
+                presenter = presenter,
+                albumDetailsId = id,
+            )
         }
     }
 }
