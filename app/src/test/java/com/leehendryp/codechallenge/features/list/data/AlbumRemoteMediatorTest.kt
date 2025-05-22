@@ -5,10 +5,11 @@ import androidx.paging.LoadType
 import androidx.paging.PagingConfig
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.leehendryp.codechallenge.features.list.data.local.LocalDataSource
-import com.leehendryp.codechallenge.features.list.data.local.model.AlbumEntity
-import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.common.data.AlbumRemoteMediator
+import com.leehendryp.codechallenge.features.common.data.local.LocalDataSource
+import com.leehendryp.codechallenge.features.common.data.local.model.AlbumEntity
+import com.leehendryp.codechallenge.features.common.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery

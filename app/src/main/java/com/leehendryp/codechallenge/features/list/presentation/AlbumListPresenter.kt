@@ -6,8 +6,8 @@ import androidx.paging.cachedIn
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException
 import com.leehendryp.codechallenge.core.presentation.BasePresenter
 import com.leehendryp.codechallenge.core.utils.NetworkChecker
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.AlbumRepository
 import com.leehendryp.codechallenge.features.list.presentation.UIState.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +22,7 @@ internal sealed interface Intent {
     data object GetAlbums : Intent
     object HandleNoItems : Intent
     data class HandleError(val error: Throwable) : Intent
+    data class SeeDetails(val id: Int) : Intent
 }
 
 internal data class UIState(
@@ -51,7 +52,9 @@ internal data class UIState(
     }
 }
 
-internal sealed interface UISideEffect // Lee: No use, for now.
+internal sealed interface UISideEffect {
+    data class GoToDetails(val id: Int) : UISideEffect
+}
 
 @HiltViewModel
 internal class AlbumListPresenter @Inject constructor(
@@ -74,6 +77,7 @@ internal class AlbumListPresenter @Inject constructor(
             is Intent.HandleNoItems -> updateState { copy(status = Status.Empty) }
             is Intent.HandleError -> handleError(intent.error)
             is Intent.NetworkChanged -> updateState { copy(hasConnection = intent.hasConnection) }
+            is Intent.SeeDetails -> sendSideEffect { UISideEffect.GoToDetails(intent.id) }
         }
     }
 
