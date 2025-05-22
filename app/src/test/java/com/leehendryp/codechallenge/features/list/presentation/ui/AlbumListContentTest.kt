@@ -12,7 +12,7 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.UIState
 import com.leehendryp.codechallenge.features.list.presentation.UIState.Status
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.ALBUM_LIST_LAZY_COLUMN

@@ -16,8 +16,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.leehendryp.codechallenge.features.common.domain.Album
 import com.leehendryp.codechallenge.features.details.presentation.ui.AlbumDetailsItemContentTestTags.ALBUM_DETAILS_ITEM_CONTENT_IMAGE
-import com.leehendryp.codechallenge.features.list.domain.Album
 import com.leehendryp.codechallenge.ui.ds.DSAsyncImage
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTypography
 import com.leehendryp.codechallenge.ui.theme.LocalDimens

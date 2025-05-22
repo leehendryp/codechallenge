@@ -1,8 +1,8 @@
-package com.leehendryp.codechallenge.features.list.data.local
+package com.leehendryp.codechallenge.features.common.data.local
 
 import androidx.paging.PagingSource
-import com.leehendryp.codechallenge.features.list.data.local.model.AlbumEntity
-import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.common.data.local.model.AlbumEntity
+import com.leehendryp.codechallenge.features.common.domain.Album
 
 internal interface LocalDataSource {
     fun getPagedAlbums(): PagingSource<Int, AlbumEntity>

@@ -1,7 +1,7 @@
 package com.leehendryp.codechallenge.features.list.data.model
 
-import com.leehendryp.codechallenge.features.list.data.local.model.AlbumEntity
-import com.leehendryp.codechallenge.features.list.data.remote.model.AlbumResponse
+import com.leehendryp.codechallenge.features.common.data.local.model.AlbumEntity
+import com.leehendryp.codechallenge.features.common.data.remote.model.AlbumResponse
 
 internal object MockDataModels {
     private val mockAlbumResponse1 = AlbumResponse(

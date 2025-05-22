@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.list.data.local.model
+package com.leehendryp.codechallenge.features.common.data.local.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

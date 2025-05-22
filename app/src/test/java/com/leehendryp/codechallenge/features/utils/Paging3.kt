@@ -2,7 +2,7 @@ package com.leehendryp.codechallenge.features.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.Album
 
 internal object AlbumDiffCallback : DiffUtil.ItemCallback<Album>() {
     override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean = oldItem.id == newItem.id

@@ -1,15 +1,15 @@
-package com.leehendryp.codechallenge.features.list.data
+package com.leehendryp.codechallenge.features.common.data
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.leehendryp.codechallenge.features.list.data.local.LocalDataSource
-import com.leehendryp.codechallenge.features.list.data.local.model.toDomainModel
-import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
+import com.leehendryp.codechallenge.features.common.data.local.LocalDataSource
+import com.leehendryp.codechallenge.features.common.data.local.model.toDomainModel
+import com.leehendryp.codechallenge.features.common.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.AlbumRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

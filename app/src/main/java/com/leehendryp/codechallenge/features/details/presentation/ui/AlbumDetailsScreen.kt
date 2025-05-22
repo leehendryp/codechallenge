@@ -9,10 +9,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leehendryp.codechallenge.R
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.details.presentation.AlbumDetailsPresenter
 import com.leehendryp.codechallenge.features.details.presentation.Intent
 import com.leehendryp.codechallenge.features.details.presentation.UIState
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.ui.RetryContent
 import com.leehendryp.codechallenge.ui.ds.DSCircularProgressIndicator
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme

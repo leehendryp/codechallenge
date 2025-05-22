@@ -1,6 +1,6 @@
-package com.leehendryp.codechallenge.features.list.data.remote.model
+package com.leehendryp.codechallenge.features.common.data.remote.model
 
-import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.Album
 
 internal fun List<AlbumResponse>.toDomainModels() = map { (id, albumId, title, url, thumbnailUrl) ->
     Album(

@@ -2,8 +2,8 @@ package com.leehendryp.codechallenge.features.details.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.leehendryp.codechallenge.core.presentation.BasePresenter
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.AlbumRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart

@@ -1,6 +1,6 @@
-package com.leehendryp.codechallenge.features.list.data.local.model
+package com.leehendryp.codechallenge.features.common.data.local.model
 
-import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.Album
 
 internal fun AlbumEntity.toDomainModel(): Album = let { (id, albumId, title, url, thumbnailUrl) ->
     Album(

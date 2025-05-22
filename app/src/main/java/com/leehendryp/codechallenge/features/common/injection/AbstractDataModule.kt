@@ -1,9 +1,9 @@
-package com.leehendryp.codechallenge.features.list.injection
+package com.leehendryp.codechallenge.features.common.injection
 
-import com.leehendryp.codechallenge.features.list.data.local.LocalDataSource
-import com.leehendryp.codechallenge.features.list.data.local.LocalDataSourceImpl
-import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
-import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSourceImpl
+import com.leehendryp.codechallenge.features.common.data.local.LocalDataSource
+import com.leehendryp.codechallenge.features.common.data.local.LocalDataSourceImpl
+import com.leehendryp.codechallenge.features.common.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.common.data.remote.RemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

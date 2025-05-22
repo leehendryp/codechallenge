@@ -7,11 +7,12 @@ import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientExc
 import com.leehendryp.codechallenge.core.domain.RETRIEVAL_ERROR
 import com.leehendryp.codechallenge.core.utils.EXCEPTION_FAILURE
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
-import com.leehendryp.codechallenge.features.list.data.local.LocalDataSource
+import com.leehendryp.codechallenge.features.common.data.AlbumRepositoryImpl
+import com.leehendryp.codechallenge.features.common.data.local.LocalDataSource
+import com.leehendryp.codechallenge.features.common.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.data.model.MockDataModels
-import com.leehendryp.codechallenge.features.list.data.remote.RemoteDataSource
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.utils.AlbumDiffCallback
 import com.leehendryp.codechallenge.features.utils.ListUpdateCallback
 import io.mockk.MockKAnnotations

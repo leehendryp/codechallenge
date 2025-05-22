@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListItemContentTestTags.ALBUM_LIST_ITEM_CONTENT_IMAGE
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListItemContentTestTags.ALBUM_LIST_ITEM_CONTENT_ROW
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme

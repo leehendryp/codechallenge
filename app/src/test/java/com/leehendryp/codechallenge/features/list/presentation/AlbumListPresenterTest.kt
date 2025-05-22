@@ -6,8 +6,8 @@ import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientExc
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ServerException
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
 import com.leehendryp.codechallenge.core.utils.NetworkChecker
-import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.common.domain.AlbumRepository
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.UIState.Snackbar
 import com.leehendryp.codechallenge.features.list.presentation.UIState.Status
 import com.leehendryp.codechallenge.features.utils.AlbumDiffCallback
