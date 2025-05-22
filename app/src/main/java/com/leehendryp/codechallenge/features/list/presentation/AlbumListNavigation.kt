@@ -3,7 +3,6 @@ package com.leehendryp.codechallenge.features.list.presentation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material3.SnackbarHostState
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.leehendryp.codechallenge.R
@@ -22,13 +21,8 @@ internal fun NavGraphBuilder.albumListGraph(
     snackbarHostState: SnackbarHostState,
     onNavigate: (id: Int) -> Unit,
 ) {
-    composable<AlbumList> {
-        val presenter: AlbumListPresenter = hiltViewModel()
-
-        AlbumListScreen(
-            snackbarHostState = snackbarHostState,
-            presenter = presenter,
-        ) { id ->
+    composable(AlbumList.route) {
+        AlbumListScreen(snackbarHostState = snackbarHostState) { id ->
             onNavigate(id)
         }
     }

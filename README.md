@@ -92,6 +92,14 @@ This project intentionally avoids keeping state in the repository layer to:
 * Delegate state interpretation to observers (such as MVI Presenters); and
 * Facilitate testing and debugging.
 
+### Navigation
+This project uses Jetpack Compose Navigation with a route interface pattern to define and manage app
+destinations, featuring scalable and clean separation of concerns due to:
+
+* Decoupled and composable navigation logic;
+* Feature-based navigation graphs; and
+* Dynamic routing and argument.
+
 ## Tooling & Project Management
 
 ### GitHub Projects (Kanban)

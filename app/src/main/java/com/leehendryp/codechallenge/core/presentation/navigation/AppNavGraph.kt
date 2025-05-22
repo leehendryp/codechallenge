@@ -18,7 +18,7 @@ internal fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AlbumList,
+        startDestination = AlbumList.route,
         modifier = modifier,
     ) {
         albumListGraph(snackbarHostState) { id ->

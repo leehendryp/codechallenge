@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leehendryp.codechallenge.R
 import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
@@ -21,8 +22,8 @@ import com.leehendryp.codechallenge.ui.theme.ThemePreviews
 @Composable
 internal fun AlbumDetailsScreen(
     modifier: Modifier = Modifier,
-    presenter: AlbumDetailsPresenter,
     albumDetailsId: Int,
+    presenter: AlbumDetailsPresenter = hiltViewModel(),
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
 
@@ -32,13 +33,13 @@ internal fun AlbumDetailsScreen(
 }
 
 @Composable
-internal fun AlbumDetailsContent(
+private fun AlbumDetailsContent(
     modifier: Modifier = Modifier,
     uiState: UIState,
     onIntent: () -> Unit,
 ) {
     when (uiState) {
-        is UIState.LoadingList -> {
+        is UIState.Loading -> {
             DSCircularProgressIndicator(modifier)
 
             LaunchedEffect(Unit) {

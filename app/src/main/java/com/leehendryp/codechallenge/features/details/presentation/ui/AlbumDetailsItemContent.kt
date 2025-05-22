@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.details.presentation.ui.AlbumDetailsItemContentTestTags.ALBUM_DETAILS_ITEM_CONTENT_COLUMN
 import com.leehendryp.codechallenge.features.details.presentation.ui.AlbumDetailsItemContentTestTags.ALBUM_DETAILS_ITEM_CONTENT_IMAGE
 import com.leehendryp.codechallenge.ui.ds.DSAsyncImage
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTypography
@@ -36,7 +37,8 @@ internal fun AlbumDetailsItemContent(
         modifier = modifier
             .fillMaxWidth()
             .clip(roundedCornerShape)
-            .padding(spacing.xl),
+            .padding(spacing.xl)
+            .testTag(ALBUM_DETAILS_ITEM_CONTENT_COLUMN),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         DSAsyncImage(
@@ -59,5 +61,6 @@ internal fun AlbumDetailsItemContent(
 }
 
 internal object AlbumDetailsItemContentTestTags {
+    const val ALBUM_DETAILS_ITEM_CONTENT_COLUMN = "ALBUM_DETAILS_ITEM_CONTENT_COLUMN"
     const val ALBUM_DETAILS_ITEM_CONTENT_IMAGE = "ALBUM_DETAILS_CONTENT_IMAGE"
 }
