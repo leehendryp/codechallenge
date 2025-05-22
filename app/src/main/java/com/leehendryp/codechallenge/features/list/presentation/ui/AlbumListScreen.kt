@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -48,7 +49,7 @@ import kotlinx.coroutines.flow.flowOf
 internal fun AlbumListScreen(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    presenter: AlbumListPresenter,
+    presenter: AlbumListPresenter = hiltViewModel(),
     onNavigate: (id: Int) -> Unit,
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
@@ -72,7 +73,7 @@ internal fun AlbumListScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun AlbumListContent(
+private fun AlbumListContent(
     modifier: Modifier = Modifier,
     uiState: UIState,
     snackbarHostState: SnackbarHostState,

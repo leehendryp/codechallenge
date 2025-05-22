@@ -1,25 +1,33 @@
 package com.leehendryp.codechallenge.features.list.presentation.ui
 
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
 import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.list.presentation.AlbumListPresenter
+import com.leehendryp.codechallenge.features.list.presentation.Intent
 import com.leehendryp.codechallenge.features.list.presentation.UIState
 import com.leehendryp.codechallenge.features.list.presentation.UIState.Status
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.ALBUM_LIST_LAZY_COLUMN
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.PAGING_PROGRESS_INDICATOR
 import com.leehendryp.codechallenge.ui.ds.DS_CIRCULAR_PROGRESS_INDICATOR
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Ignore
 import org.junit.Rule
@@ -28,13 +36,15 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-internal class AlbumListContentTest {
+internal class AlbumListScreenTest {
     @get:Rule
     val rule = createComposeRule()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     internal val coroutineRule = MainCoroutineRule()
+    private val presenter: AlbumListPresenter = mockk(relaxed = true)
+    private val onNavigate: (Int) -> Unit = mockk()
 
     @Test
     fun `when UIState is InitialState should render UI properly`() {
@@ -138,13 +148,19 @@ internal class AlbumListContentTest {
 
             onNodeWithTag(ALBUM_LIST_LAZY_COLUMN).assertIsDisplayed()
             MockDomainModels.mockAlbums.forEach { album ->
+                // FIXME: onNodeWithTag(ALBUM_LIST_ITEM_CONTENT_IMAGE + "_${album.id}").assertIsDisplayed()
                 onNodeWithText(album.title).performScrollTo().assertIsDisplayed()
-                // FIXME: onNodeWithTag(ALBUM_CONTENT_IMAGE + "_${album.id}").assertIsDisplayed()
             }
+            onNodeWithText(MockDomainModels.mockAlbum1.title)
+                .performScrollTo()
+                .assertIsDisplayed()
+                .performClick()
 
             onNodeWithTag(DS_CIRCULAR_PROGRESS_INDICATOR).assertIsNotDisplayed()
             onNodeWithTag(PAGING_PROGRESS_INDICATOR).assertIsNotDisplayed()
             onNodeWithTag(RetryScreenTestTags.RETRY_SCREEN).assertIsNotDisplayed()
+
+            verify(exactly = 1) { presenter.dispatch(Intent.SeeDetails(MockDomainModels.mockAlbum1.id)) }
         }
     }
 
@@ -214,12 +230,16 @@ internal class AlbumListContentTest {
     }
 
     private fun ComposeContentTestRule.setContentWithUIState(uiState: UIState) {
+        every { presenter.uiState } returns MutableStateFlow(uiState)
+
         setContent {
             CodeChallengeTheme {
-                AlbumListContent(
-                    uiState = uiState,
-                    snackbarHostState = SnackbarHostState(),
-                ) {}
+                AlbumListScreen(
+                    presenter = presenter,
+                    snackbarHostState = remember { SnackbarHostState() },
+                ) {
+                    onNavigate(it)
+                }
             }
         }
     }

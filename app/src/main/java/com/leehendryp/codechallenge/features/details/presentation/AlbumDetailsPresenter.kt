@@ -15,12 +15,12 @@ internal sealed interface Intent {
 }
 
 internal sealed interface UIState {
-    data object LoadingList : UIState
+    data object Loading : UIState
     data object Retry : UIState
     data class Content(val album: Album) : UIState
 
     companion object {
-        val InitialState = LoadingList
+        val InitialState = Loading
     }
 }
 
@@ -43,7 +43,7 @@ internal class AlbumDetailsPresenter @Inject constructor(
         viewModelScope.launch {
             repository.getAlbum(id)
                 .onStart {
-                    updateState { UIState.LoadingList }
+                    updateState { UIState.Loading }
                 }
                 .catch {
                     it
