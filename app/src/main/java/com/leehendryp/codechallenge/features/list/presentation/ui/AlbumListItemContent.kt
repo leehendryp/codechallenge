@@ -18,8 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListItemContentTestTags.ALBUM_LIST_ITEM_CONTENT_IMAGE
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListItemContentTestTags.ALBUM_LIST_ITEM_CONTENT_ROW
 import com.leehendryp.codechallenge.ui.ds.DSAsyncImage

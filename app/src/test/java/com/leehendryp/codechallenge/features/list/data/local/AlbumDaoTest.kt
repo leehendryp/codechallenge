@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.leehendryp.codechallenge.core.data.database.CodeChallengeDatabase
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
+import com.leehendryp.codechallenge.features.common.data.local.AlbumDao
 import com.leehendryp.codechallenge.features.list.data.model.MockDataModels
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

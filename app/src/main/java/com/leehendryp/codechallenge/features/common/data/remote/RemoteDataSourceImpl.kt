@@ -1,12 +1,12 @@
-package com.leehendryp.codechallenge.features.list.data.remote
+package com.leehendryp.codechallenge.features.common.data.remote
 
 import com.leehendryp.codechallenge.BuildConfig
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ClientException
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException.ServerException
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException.UnknownException
-import com.leehendryp.codechallenge.features.list.data.remote.model.AlbumResponse
-import com.leehendryp.codechallenge.features.list.data.remote.model.toDomainModels
-import com.leehendryp.codechallenge.features.list.domain.Album
+import com.leehendryp.codechallenge.features.common.data.remote.model.AlbumResponse
+import com.leehendryp.codechallenge.features.common.data.remote.model.toDomainModels
+import com.leehendryp.codechallenge.features.common.domain.Album
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
@@ -51,7 +51,7 @@ internal class RemoteDataSourceImpl @Inject constructor(
     private suspend fun loadJsonIntoMemoryFirst(response: HttpResponse): List<AlbumResponse> {
         val channel = response.bodyAsChannel()
         val content = channel.readRemaining().readText()
-        val responses = Json.decodeFromString<List<AlbumResponse>>(content)
+        val responses = Json.Default.decodeFromString<List<AlbumResponse>>(content)
         return responses
     }
 }

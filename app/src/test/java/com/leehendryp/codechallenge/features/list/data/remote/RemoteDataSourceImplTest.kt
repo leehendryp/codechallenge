@@ -7,8 +7,10 @@ import com.leehendryp.codechallenge.core.utils.EXCEPTION_FAILURE
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
 import com.leehendryp.codechallenge.core.utils.createMockKtorClient
 import com.leehendryp.codechallenge.core.utils.loadJsonFromFile
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.common.data.remote.RemoteDataSource
+import com.leehendryp.codechallenge.features.common.data.remote.RemoteDataSourceImpl
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -30,8 +30,8 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.leehendryp.codechallenge.R
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.AlbumListPresenter
 import com.leehendryp.codechallenge.features.list.presentation.Intent
 import com.leehendryp.codechallenge.features.list.presentation.UISideEffect

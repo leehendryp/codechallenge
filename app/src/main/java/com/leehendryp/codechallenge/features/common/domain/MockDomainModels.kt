@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.list.domain
+package com.leehendryp.codechallenge.features.common.domain
 
 internal object MockDomainModels {
     val mockAlbum1: Album = Album(

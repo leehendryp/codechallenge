@@ -6,9 +6,11 @@ import com.leehendryp.codechallenge.core.domain.INSERTION_ERROR
 import com.leehendryp.codechallenge.core.domain.RETRIEVAL_ERROR
 import com.leehendryp.codechallenge.core.utils.EXCEPTION_FAILURE
 import com.leehendryp.codechallenge.core.utils.MainCoroutineRule
-import com.leehendryp.codechallenge.features.list.data.local.model.AlbumEntity
+import com.leehendryp.codechallenge.features.common.data.local.AlbumDao
+import com.leehendryp.codechallenge.features.common.data.local.LocalDataSourceImpl
+import com.leehendryp.codechallenge.features.common.data.local.model.AlbumEntity
+import com.leehendryp.codechallenge.features.common.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.data.model.MockDataModels
-import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

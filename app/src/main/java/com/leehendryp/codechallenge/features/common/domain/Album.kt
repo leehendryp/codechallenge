@@ -1,4 +1,4 @@
-package com.leehendryp.codechallenge.features.list.domain
+package com.leehendryp.codechallenge.features.common.domain
 
 internal data class Album(
     val id: Int,

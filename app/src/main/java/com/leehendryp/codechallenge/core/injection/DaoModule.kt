@@ -1,7 +1,7 @@
 package com.leehendryp.codechallenge.core.injection
 
 import com.leehendryp.codechallenge.core.data.database.CodeChallengeDatabase
-import com.leehendryp.codechallenge.features.list.data.local.AlbumDao
+import com.leehendryp.codechallenge.features.common.data.local.AlbumDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

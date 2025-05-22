@@ -6,8 +6,8 @@ import androidx.paging.cachedIn
 import com.leehendryp.codechallenge.core.domain.CodeChallengeException
 import com.leehendryp.codechallenge.core.presentation.BasePresenter
 import com.leehendryp.codechallenge.core.utils.NetworkChecker
-import com.leehendryp.codechallenge.features.list.domain.Album
-import com.leehendryp.codechallenge.features.list.domain.AlbumRepository
+import com.leehendryp.codechallenge.features.common.domain.Album
+import com.leehendryp.codechallenge.features.common.domain.AlbumRepository
 import com.leehendryp.codechallenge.features.list.presentation.UIState.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
