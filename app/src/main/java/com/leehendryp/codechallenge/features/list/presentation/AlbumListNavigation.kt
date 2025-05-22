@@ -1,7 +1,7 @@
 package com.leehendryp.codechallenge.features.list.presentation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LibraryMusic
+import androidx.compose.material.icons.filled.PhotoAlbum
 import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data object AlbumList : Destination {
-    override val icon = Icons.Filled.LibraryMusic
+    override val icon = Icons.Filled.PhotoAlbum
     override val route = "album_list"
     override val title: Int = R.string.top_bar_title_feed
 }
