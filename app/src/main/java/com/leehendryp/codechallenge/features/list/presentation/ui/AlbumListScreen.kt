@@ -8,28 +8,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DataArray
 import androidx.compose.material.icons.filled.WifiOff
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -40,11 +34,11 @@ import com.leehendryp.codechallenge.features.list.domain.Album
 import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
 import com.leehendryp.codechallenge.features.list.presentation.AlbumListPresenter
 import com.leehendryp.codechallenge.features.list.presentation.Intent
+import com.leehendryp.codechallenge.features.list.presentation.UISideEffect
 import com.leehendryp.codechallenge.features.list.presentation.UIState
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.ALBUM_LIST_LAZY_COLUMN
-import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.FULL_SCREEN_PROGRESS_INDICATOR
 import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.PAGING_PROGRESS_INDICATOR
-import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListScreenTestTags.TOP_APP_BAR
+import com.leehendryp.codechallenge.ui.ds.DSCircularProgressIndicator
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.LocalDimens
 import com.leehendryp.codechallenge.ui.theme.ThemePreviews
@@ -53,31 +47,40 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 internal fun AlbumListScreen(
     modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState,
     presenter: AlbumListPresenter,
+    onNavigate: (id: Int) -> Unit,
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
 
-    AlbumListScreenContent(modifier, uiState) { intent ->
+    AlbumListContent(
+        modifier = modifier,
+        uiState = uiState,
+        snackbarHostState = snackbarHostState,
+    ) { intent ->
         presenter.dispatch(intent)
+    }
+
+    LaunchedEffect(Unit) {
+        presenter.uiSideEffect.collect { effect ->
+            when (effect) {
+                is UISideEffect.GoToDetails -> onNavigate(effect.id)
+            }
+        }
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun AlbumListScreenContent(
+internal fun AlbumListContent(
     modifier: Modifier = Modifier,
     uiState: UIState,
+    snackbarHostState: SnackbarHostState,
     onIntent: (Intent) -> Unit,
 ) {
-    LaunchedEffect(Unit) {
-        onIntent(Intent.GetAlbums)
-    }
-
-    val snackbarHostState = remember { SnackbarHostState() }
-
     uiState.snackbar?.let { snackBar ->
         val message = when (snackBar) {
-            UIState.Snackbar.Error -> stringResource(R.string.feed_error)
+            UIState.Snackbar.Error -> stringResource(R.string.generic_error)
         }
 
         LaunchedEffect(snackBar) {
@@ -85,82 +88,61 @@ internal fun AlbumListScreenContent(
         }
     }
 
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.testTag(TOP_APP_BAR),
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                ),
-                title = {
-                    Text(stringResource(R.string.feed_title_albums))
-                },
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        when (val status = uiState.status) {
+            is UIState.Status.LoadingList -> {
+                DSCircularProgressIndicator()
+
+                LaunchedEffect(Unit) {
+                    onIntent(Intent.GetAlbums)
+                }
+            }
+
+            is UIState.Status.Content -> AlbumListLazyColumnContent(
+                status = status,
+                onIntent = onIntent,
             )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            when (val status = uiState.status) {
-                is UIState.Status.LoadingList -> FullScreenLoadingWheel()
 
-                is UIState.Status.Content -> AlbumListContent(
-                    status = status,
-                    onIntent = onIntent,
-                )
+            is UIState.Status.ClientRetry -> RetryContent(
+                icon = Icons.Default.WifiOff,
+                message = R.string.feed_retry_client_issue,
+                hasConnection = uiState.hasConnection,
+            ) {
+                onIntent(Intent.GetAlbums)
+            }
 
-                is UIState.Status.ClientRetry -> RetryContent(
-                    icon = Icons.Default.WifiOff,
-                    message = R.string.feed_retry_client_issue,
-                    hasConnection = uiState.hasConnection,
-                ) {
-                    onIntent(Intent.GetAlbums)
-                }
+            is UIState.Status.ServerRetry -> RetryContent(
+                icon = Icons.Default.Close,
+                message = R.string.feed_retry_server_issue,
+                hasConnection = uiState.hasConnection,
+            ) {
+                onIntent(Intent.GetAlbums)
+            }
 
-                is UIState.Status.ServerRetry -> RetryContent(
-                    icon = Icons.Default.Close,
-                    message = R.string.feed_retry_server_issue,
-                    hasConnection = uiState.hasConnection,
-                ) {
-                    onIntent(Intent.GetAlbums)
-                }
-
-                is UIState.Status.Empty -> RetryContent(
-                    icon = Icons.Default.DataArray,
-                    message = R.string.feed_empty,
-                    hasConnection = uiState.hasConnection,
-                ) {
-                    onIntent(Intent.GetAlbums)
-                }
+            is UIState.Status.Empty -> RetryContent(
+                icon = Icons.Default.DataArray,
+                message = R.string.feed_empty,
+                hasConnection = uiState.hasConnection,
+            ) {
+                onIntent(Intent.GetAlbums)
             }
         }
     }
 }
 
 @Composable
-private fun AlbumListContent(
+private fun AlbumListLazyColumnContent(
     status: UIState.Status.Content,
     onIntent: (Intent) -> Unit,
 ) {
     val spacing = LocalDimens.current.spacing
     val lazyPagingItems = status.pagingDataFlow.collectAsLazyPagingItems()
 
-    // Show full screen loading for initial refresh
-    when (val loadState = lazyPagingItems.loadState.refresh) {
-        is LoadState.Loading -> {
-            FullScreenLoadingWheel()
-            return
-        }
-
-        is LoadState.Error -> onIntent(Intent.HandleError(loadState.error))
-        else -> Unit
-    }
+    if (showLoadingOnRefreshState(lazyPagingItems.loadState, onIntent)) return
 
     HandleEmptyListOnCompleteSourceLoading(lazyPagingItems, onIntent)
 
@@ -176,25 +158,45 @@ private fun AlbumListContent(
             key = { index -> lazyPagingItems[index]?.id ?: index },
         ) { index ->
             lazyPagingItems[index]?.let { album ->
-                AlbumContent(model = album)
+                AlbumListItemContent(model = album) {
+                    onIntent(Intent.SeeDetails(album.id))
+                }
             }
         }
 
-        // Show bottom-loading spinner for pagination
-        when (val appendState = lazyPagingItems.loadState.append) {
-            is LoadState.Loading -> item {
-                PagingLoadingWheel()
-            }
-
-            is LoadState.Error -> onIntent(Intent.HandleError(appendState.error))
-            else -> Unit
-        }
+        handleAppendState(lazyPagingItems.loadState, onIntent)
     }
 }
 
 @Composable
-private fun FullScreenLoadingWheel(modifier: Modifier = Modifier) {
-    CircularProgressIndicator(modifier = modifier.testTag(FULL_SCREEN_PROGRESS_INDICATOR))
+private fun showLoadingOnRefreshState(
+    loadStates: CombinedLoadStates,
+    onIntent: (Intent) -> Unit,
+): Boolean {
+    when (val loadState = loadStates.refresh) {
+        is LoadState.Loading -> {
+            DSCircularProgressIndicator()
+            return true
+        }
+
+        is LoadState.Error -> onIntent(Intent.HandleError(loadState.error))
+        else -> Unit
+    }
+    return false
+}
+
+private fun LazyListScope.handleAppendState(
+    loadStates: CombinedLoadStates,
+    onIntent: (Intent) -> Unit,
+) {
+    when (val appendState = loadStates.append) {
+        is LoadState.Loading -> item {
+            PagingLoadingWheel()
+        }
+
+        is LoadState.Error -> onIntent(Intent.HandleError(appendState.error))
+        else -> Unit
+    }
 }
 
 @Composable
@@ -208,7 +210,7 @@ private fun PagingLoadingWheel() {
             .padding(vertical = spacing.l),
         contentAlignment = Alignment.Center,
     ) {
-        CircularProgressIndicator()
+        DSCircularProgressIndicator()
     }
 }
 
@@ -246,13 +248,14 @@ private fun AlbumListContentPreview() {
             ),
         )
 
-        AlbumListScreenContent(
+        AlbumListContent(
             uiState = UIState(
                 status = UIState.Status.Content(
                     pagingDataFlow = pagingDataFlow,
                 ),
                 hasConnection = true,
             ),
+            snackbarHostState = SnackbarHostState(),
         ) {}
     }
 }
@@ -261,18 +264,17 @@ private fun AlbumListContentPreview() {
 @Composable
 private fun EmptyContentPreview() {
     CodeChallengeTheme {
-        AlbumListScreenContent(
+        AlbumListContent(
             uiState = UIState(
                 status = UIState.Status.Empty,
                 hasConnection = true,
             ),
+            snackbarHostState = SnackbarHostState(),
         ) {}
     }
 }
 
 internal object AlbumListScreenTestTags {
-    const val TOP_APP_BAR = "TOP_BAR"
-    const val FULL_SCREEN_PROGRESS_INDICATOR = "FULL_SCREEN_PROGRESS_INDICATOR"
     const val PAGING_PROGRESS_INDICATOR = "PAGING_PROGRESS_INDICATOR"
     const val ALBUM_LIST_LAZY_COLUMN = "ALBUM_LIST_LAZY_COLUMN"
 }

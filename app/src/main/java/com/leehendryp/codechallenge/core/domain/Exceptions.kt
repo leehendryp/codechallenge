@@ -1,5 +1,6 @@
 package com.leehendryp.codechallenge.core.domain
 
+internal const val NO_SUCH_ITEM_ERROR = "No such item was found in the local data."
 internal const val RETRIEVAL_ERROR = "An error occurred when getting local data."
 internal const val INSERTION_ERROR = "An error occurred when saving local data."
 
