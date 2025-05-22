@@ -24,7 +24,11 @@ internal fun NavGraphBuilder.albumListGraph(
 ) {
     composable<AlbumList> {
         val presenter: AlbumListPresenter = hiltViewModel()
-        AlbumListScreen(snackbarHostState = snackbarHostState, presenter = presenter) { id ->
+
+        AlbumListScreen(
+            snackbarHostState = snackbarHostState,
+            presenter = presenter,
+        ) { id ->
             onNavigate(id)
         }
     }

@@ -53,7 +53,7 @@ internal fun AlbumListScreen(
 ) {
     val uiState: UIState by presenter.uiState.collectAsStateWithLifecycle()
 
-    AlbumListScreenContent(
+    AlbumListContent(
         modifier = modifier,
         uiState = uiState,
         snackbarHostState = snackbarHostState,
@@ -72,7 +72,7 @@ internal fun AlbumListScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun AlbumListScreenContent(
+internal fun AlbumListContent(
     modifier: Modifier = Modifier,
     uiState: UIState,
     snackbarHostState: SnackbarHostState,
@@ -102,7 +102,7 @@ internal fun AlbumListScreenContent(
                 }
             }
 
-            is UIState.Status.Content -> AlbumListContent(
+            is UIState.Status.Content -> AlbumListLazyColumnContent(
                 status = status,
                 onIntent = onIntent,
             )
@@ -135,7 +135,7 @@ internal fun AlbumListScreenContent(
 }
 
 @Composable
-private fun AlbumListContent(
+private fun AlbumListLazyColumnContent(
     status: UIState.Status.Content,
     onIntent: (Intent) -> Unit,
 ) {
@@ -158,7 +158,7 @@ private fun AlbumListContent(
             key = { index -> lazyPagingItems[index]?.id ?: index },
         ) { index ->
             lazyPagingItems[index]?.let { album ->
-                AlbumContent(model = album) {
+                AlbumListItemContent(model = album) {
                     onIntent(Intent.SeeDetails(album.id))
                 }
             }
@@ -248,7 +248,7 @@ private fun AlbumListContentPreview() {
             ),
         )
 
-        AlbumListScreenContent(
+        AlbumListContent(
             uiState = UIState(
                 status = UIState.Status.Content(
                     pagingDataFlow = pagingDataFlow,
@@ -264,7 +264,7 @@ private fun AlbumListContentPreview() {
 @Composable
 private fun EmptyContentPreview() {
     CodeChallengeTheme {
-        AlbumListScreenContent(
+        AlbumListContent(
             uiState = UIState(
                 status = UIState.Status.Empty,
                 hasConnection = true,
@@ -275,7 +275,6 @@ private fun EmptyContentPreview() {
 }
 
 internal object AlbumListScreenTestTags {
-    const val TOP_APP_BAR = "TOP_BAR"
     const val PAGING_PROGRESS_INDICATOR = "PAGING_PROGRESS_INDICATOR"
     const val ALBUM_LIST_LAZY_COLUMN = "ALBUM_LIST_LAZY_COLUMN"
 }

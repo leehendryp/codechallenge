@@ -20,16 +20,16 @@ internal data object AlbumDetails : Destination {
     override val route = "details"
     override val title: Int = R.string.top_bar_title_details
 
-    val routeWithArgs = "$route/{$ALBUM_DETAILS_ID}"
+    internal val routeWithArgs = "$route/{$ALBUM_DETAILS_ID}"
 
-    val arguments = listOf(
+    internal val arguments = listOf(
         navArgument(ALBUM_DETAILS_ID) { type = NavType.IntType },
     )
 
-    const val ALBUM_DETAILS_ID = "id"
+    internal const val ALBUM_DETAILS_ID = "id"
 }
 
-fun NavController.toDetails(id: Int) = navigate("${AlbumDetails.route}/$id")
+internal fun NavController.toDetails(id: Int) = navigate("${AlbumDetails.route}/$id")
 
 internal fun NavGraphBuilder.albumDetailsGraph() {
     composable(

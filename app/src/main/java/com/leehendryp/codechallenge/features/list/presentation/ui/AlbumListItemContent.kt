@@ -20,7 +20,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.leehendryp.codechallenge.features.list.domain.Album
 import com.leehendryp.codechallenge.features.list.domain.MockDomainModels
-import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumContentTestTags.ALBUM_CONTENT_IMAGE
+import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListItemContentTestTags.ALBUM_LIST_ITEM_CONTENT_IMAGE
+import com.leehendryp.codechallenge.features.list.presentation.ui.AlbumListItemContentTestTags.ALBUM_LIST_ITEM_CONTENT_ROW
 import com.leehendryp.codechallenge.ui.ds.DSAsyncImage
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTheme
 import com.leehendryp.codechallenge.ui.theme.CodeChallengeTypography
@@ -28,10 +29,10 @@ import com.leehendryp.codechallenge.ui.theme.LocalDimens
 import com.leehendryp.codechallenge.ui.theme.ThemePreviews
 
 @Composable
-internal fun AlbumContent(
+internal fun AlbumListItemContent(
     modifier: Modifier = Modifier,
     model: Album,
-    onClick: () -> Unit,
+    onSelect: () -> Unit,
 ) {
     val spacing = LocalDimens.current.spacing
     val stroke = LocalDimens.current.stroke
@@ -50,8 +51,9 @@ internal fun AlbumContent(
                 ),
                 shape = roundedCornerShape,
             )
-            .clickable { onClick() }
-            .padding(spacing.l),
+            .clickable { onSelect() }
+            .padding(spacing.l)
+            .testTag(ALBUM_LIST_ITEM_CONTENT_ROW),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DSAsyncImage(
@@ -59,7 +61,7 @@ internal fun AlbumContent(
                 .size(imageSize)
                 .clip(RoundedCornerShape(spacing.l))
                 .background(colorScheme.surfaceContainer)
-                .testTag(ALBUM_CONTENT_IMAGE + "_${model.id}"),
+                .testTag(ALBUM_LIST_ITEM_CONTENT_IMAGE + "_${model.id}"),
             imageUrl = model.thumbnailUrl,
             contentScale = ContentScale.Fit,
             contentDescription = null,
@@ -78,12 +80,13 @@ internal fun AlbumContent(
 @Composable
 private fun AlbumContentPreview() {
     CodeChallengeTheme {
-        AlbumContent(
+        AlbumListItemContent(
             model = MockDomainModels.mockAlbums.first(),
         ) {}
     }
 }
 
-internal object AlbumContentTestTags {
-    const val ALBUM_CONTENT_IMAGE = "ALBUM_CONTENT_IMAGE"
+internal object AlbumListItemContentTestTags {
+    const val ALBUM_LIST_ITEM_CONTENT_ROW = "ALBUM_LIST_ITEM_CONTENT_ROW"
+    const val ALBUM_LIST_ITEM_CONTENT_IMAGE = "ALBUM_LIST_ITEM_CONTENT_IMAGE"
 }
