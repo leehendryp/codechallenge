@@ -1,9 +1,18 @@
-# codechallenge
-
-## Album Listing Code Challenge
-This project implements an offline-first, paginated album listing feature using modern Android development
+# Photo Album App
+This project implements an offline-first, paginated photo album listing feature using modern Android development
 best practices. It fetches a list of albums from a remote data source, caches them locally, and displays
 them efficiently with local pagination.
+
+### Note
+This project hides API secrets by loading them locally via BuildConfig, to simulate a more secure production 
+environment. Nonetheless, this is a demo app after all, so, if you wish to run the app locally, add 
+to the root of the project a `keys.properties` file with this content:
+
+```
+api.host=leehendryp.github.io
+api.path=mock-albums/mock_albums.json
+api.user.agent=PhotoAlbumApp/1.0
+```
 
 ## Tech Stack
 * Kotlin;
@@ -31,7 +40,8 @@ them efficiently with local pagination.
 * Network status awareness;
 * Declarative empty-state detection in the UI (needed for Paging 3);
 * Error handling using sealed exceptions; 
-* Thorough unit test suite.
+* API secret loading via BuildConfig; and
+* Automated tests (mostly unit tests).
 
 ## Architecture
 
