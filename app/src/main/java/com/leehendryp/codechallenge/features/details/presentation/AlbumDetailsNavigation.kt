@@ -1,7 +1,7 @@
 package com.leehendryp.codechallenge.features.details.presentation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Photo
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data object AlbumDetails : Destination {
-    override val icon = Icons.Filled.MusicNote
+    override val icon = Icons.Filled.Photo
     override val route = "details"
     override val title: Int = R.string.top_bar_title_details
 
