@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CodeChallenge"
+rootProject.name = "PhotoAlbum"
 include(":app")
  

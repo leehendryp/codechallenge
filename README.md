@@ -114,11 +114,15 @@ destinations, featuring scalable and clean separation of concerns due to:
 
 ### GitHub Projects (Kanban)
 This project leverages **GitHub Projects** to track issues and tasks in a Kanban-style board. It ensures 
-visibility of ongoing development, bug tracking, and feature planning.
+visibility of ongoing development, bug tracking, and feature planning:
+
+[App's GitHub Projects](https://github.com/users/leehendryp/projects/5)
 
 ### GitHub Actions (CI)
 Automated workflows are powered by **GitHub Actions**, enabling continuous integration for testing and
 ensuring code quality across changes and pull requests.
+
+[App's GitHub Actions](https://github.com/leehendryp/photo-album-app/actions)
 
 The following jobs are defined:
 

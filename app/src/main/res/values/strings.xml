@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CodeChallenge</string>
+    <string name="app_name">PhotoAlbum</string>
     <string name="top_bar_title_feed">Albums</string>
     <string name="top_bar_title_details">Details</string>
     <string name="feed_retry_client_issue">Please, make sure you are online and retry.</string>
@@ -7,4 +7,5 @@
     <string name="feed_retry_call_to_action">Retry</string>
     <string name="feed_empty">No data available.</string>
     <string name="generic_error">An error occurred.</string>
+    <string name="top_bar_back_button_content_description">Back button</string>
 </resources>
