@@ -14,11 +14,11 @@ plugins {
 apply(from = "../keys.gradle.kts")
 
 android {
-    namespace = "com.leehendryp.codechallenge"
+    namespace = "com.leehendryp.photoalbum"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.leehendryp.codechallenge"
+        applicationId = "com.leehendryp.photoalbum"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
