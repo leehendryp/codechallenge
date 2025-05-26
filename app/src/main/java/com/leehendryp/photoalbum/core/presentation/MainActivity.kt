@@ -4,11 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -68,7 +63,7 @@ internal class MainActivity : ComponentActivity() {
                     title = { TopBarTitle(currentScreen) },
                     navigationIcon = {
                         if (navController.previousBackStackEntry != null) {
-                            BackIconButton(isVisible = currentScreen != AlbumList) {
+                            BackIconButton {
                                 navController.navigateUp()
                             }
                         }
@@ -86,18 +81,12 @@ internal class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun BackIconButton(isVisible: Boolean, onClick: () -> Unit) {
-        AnimatedVisibility(
-            visible = isVisible,
-            enter = fadeIn() + slideInHorizontally(),
-            exit = fadeOut() + slideOutHorizontally(),
-        ) {
-            IconButton(onClick = onClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.top_bar_back_button_content_description),
-                )
-            }
+    private fun BackIconButton(onClick: () -> Unit) {
+        IconButton(onClick = onClick) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.top_bar_back_button_content_description),
+            )
         }
     }
 
